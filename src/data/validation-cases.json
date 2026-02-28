@@ -1,0 +1,87 @@
+[
+  {
+    "id": "DMD-del45-50",
+    "name": "DMD Exon 45-50 Deletion (Classic Duchenne)",
+    "description": "Deletion of exons 45-50 in DMD gene. Out-of-frame deletion causing Duchenne phenotype.",
+    "input": {
+      "gene": "DMD",
+      "mutationType": "deletion",
+      "affectedExons": [45, 46, 47, 48, 49, 50]
+    },
+    "expected": {
+      "isFrameshift": true,
+      "bestSkipExons": [51],
+      "restoredFrame": true,
+      "knownDrug": "Viltolarsen (Viltepso)",
+      "notes": "Exon 51 skipping restores reading frame. Eteplirsen and Viltolarsen are FDA-approved for this skip."
+    }
+  },
+  {
+    "id": "DMD-del49-50",
+    "name": "DMD Exon 49-50 Deletion",
+    "description": "Deletion of exons 49-50 in DMD gene. Out-of-frame, amenable to exon 51 skipping.",
+    "input": {
+      "gene": "DMD",
+      "mutationType": "deletion",
+      "affectedExons": [49, 50]
+    },
+    "expected": {
+      "isFrameshift": true,
+      "bestSkipExons": [51],
+      "restoredFrame": true,
+      "knownDrug": "Eteplirsen (Exondys 51)",
+      "notes": "One of the most common DMD mutations amenable to exon 51 skipping."
+    }
+  },
+  {
+    "id": "DMD-del44",
+    "name": "DMD Exon 44 Deletion",
+    "description": "Single exon 44 deletion. Amenable to exon 45 skipping.",
+    "input": {
+      "gene": "DMD",
+      "mutationType": "deletion",
+      "affectedExons": [44]
+    },
+    "expected": {
+      "isFrameshift": true,
+      "bestSkipExons": [45],
+      "restoredFrame": true,
+      "knownDrug": "Casimersen (Amondys 45)",
+      "notes": "Exon 45 skipping with Casimersen is FDA-approved."
+    }
+  },
+  {
+    "id": "DMD-del52",
+    "name": "DMD Exon 52 Deletion",
+    "description": "Single exon 52 deletion. Amenable to exon 53 skipping.",
+    "input": {
+      "gene": "DMD",
+      "mutationType": "deletion",
+      "affectedExons": [52]
+    },
+    "expected": {
+      "isFrameshift": true,
+      "bestSkipExons": [53],
+      "restoredFrame": true,
+      "knownDrug": "Golodirsen (Vyondys 53)",
+      "notes": "Exon 53 skipping with Golodirsen is FDA-approved."
+    }
+  },
+  {
+    "id": "DMD-del3-7",
+    "name": "DMD Exon 3-7 Deletion (Becker-like)",
+    "description": "Deletion of exons 3-7 in DMD gene. In-frame deletion producing Becker phenotype.",
+    "input": {
+      "gene": "DMD",
+      "mutationType": "deletion",
+      "affectedExons": [3, 4, 5, 6, 7]
+    },
+    "expected": {
+      "isFrameshift": false,
+      "bestSkipExons": [],
+      "restoredFrame": true,
+      "knownDrug": null,
+      "notes": "Already in-frame deletion — produces shortened but partially functional dystrophin (Becker phenotype). No exon skipping needed."
+    }
+  }
+]
