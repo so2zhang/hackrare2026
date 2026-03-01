@@ -1,6 +1,7 @@
 import {
   getExon,
   totalBasePairs,
+  totalGeneBp,
   getLostDomains,
   assessConfidence,
 } from "./engine";
@@ -33,7 +34,7 @@ export function findSkipStrategies(
 
   const deletedSet = new Set(deletedExons);
   const maxDeleted = Math.max(...deletedExons);
-  const totalGeneBp = profile.exons.reduce((s, e) => s + e.lengthBp, 0);
+  const geneCodingBp = totalGeneBp(profile);
 
   // Search only downstream of deletion, within SEARCH_WINDOW exons
   const searchStart = maxDeleted + 1;
@@ -47,7 +48,7 @@ export function findSkipStrategies(
     profile,
     mutation,
     deletedSet,
-    totalGeneBp,
+    geneCodingBp,
     searchStart,
     searchEnd,
     1
@@ -60,7 +61,7 @@ export function findSkipStrategies(
         profile,
         mutation,
         deletedSet,
-        totalGeneBp,
+        geneCodingBp,
         searchStart,
         searchEnd,
         spanLen
@@ -87,7 +88,7 @@ function findStrategiesOfSpan(
   profile: GeneProfile,
   mutation: MutationInput,
   deletedSet: Set<number>,
-  totalGeneBp: number,
+  geneCodingBp: number,
   searchStart: number,
   searchEnd: number,
   spanLen: number
@@ -114,9 +115,15 @@ function findStrategiesOfSpan(
 
     if (allRemovedBp % 3 !== 0) continue;
 
-    const remainingBp = totalGeneBp - allRemovedBp;
-    const predictedProteinLength = Math.floor(remainingBp / 3);
-    const percentWildtype = Math.round((remainingBp / totalGeneBp) * 100);
+    const remainingBp = geneCodingBp - allRemovedBp;
+    const predictedProteinLength = Math.max(
+      0,
+      Math.floor((remainingBp - 3) / 3)
+    );
+    const percentWildtype = Math.min(
+      100,
+      Math.round((predictedProteinLength / profile.proteinLength) * 100)
+    );
     const lostDomains = getLostDomains(profile, allRemovedExons);
     const confidence = assessConfidence(percentWildtype, lostDomains);
     const skippedBp = totalBasePairs(profile, candidateExons);

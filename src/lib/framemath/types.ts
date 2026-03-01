@@ -7,6 +7,8 @@ export interface ExonInfo {
   lengthBp: number;
   skippable: boolean;
   criticalDomains: string[];
+  mRNA_start?: number;
+  mRNA_end?: number;
 }
 
 export interface GeneProfile {
@@ -16,6 +18,8 @@ export interface GeneProfile {
   totalExons: number;
   exons: ExonInfo[];
   proteinLength: number;
+  cdsStart_mRNA?: number;
+  cdsEnd_mRNA?: number;
 }
 
 export type MutationType = "deletion" | "duplication" | "insertion";

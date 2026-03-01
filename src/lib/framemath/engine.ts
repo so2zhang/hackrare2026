@@ -22,12 +22,31 @@ export function getExon(profile: GeneProfile, exonNumber: number): ExonInfo | un
 }
 
 /**
- * Calculate total base pairs for a set of exons.
+ * Compute the coding (CDS-only) bp for a single exon by clipping its
+ * mRNA coordinates to the CDS boundaries.  Falls back to lengthBp when
+ * CDS metadata is absent (backward-compatible with coding-only data).
+ */
+export function getCodingBp(profile: GeneProfile, exon: ExonInfo): number {
+  if (
+    profile.cdsStart_mRNA != null &&
+    profile.cdsEnd_mRNA != null &&
+    exon.mRNA_start != null &&
+    exon.mRNA_end != null
+  ) {
+    const codingStart = Math.max(exon.mRNA_start, profile.cdsStart_mRNA + 1);
+    const codingEnd = Math.min(exon.mRNA_end, profile.cdsEnd_mRNA);
+    return Math.max(0, codingEnd - codingStart + 1);
+  }
+  return exon.lengthBp;
+}
+
+/**
+ * Calculate total *coding* base pairs for a set of exons.
  */
 export function totalBasePairs(profile: GeneProfile, exonNumbers: number[]): number {
   return exonNumbers.reduce((sum, n) => {
     const exon = getExon(profile, n);
-    return sum + (exon?.lengthBp ?? 0);
+    return sum + (exon ? getCodingBp(profile, exon) : 0);
   }, 0);
 }
 
@@ -78,23 +97,23 @@ export function checkPhaseCompatibility(
 
 /**
  * Calculate predicted protein length after removing exons.
- * Returns amino acid count (total remaining bp / 3).
+ * Uses coding bp only and subtracts the stop codon (3bp).
  */
 export function predictProteinLength(
   profile: GeneProfile,
   removedExons: number[]
 ): number {
   const removedBp = totalBasePairs(profile, removedExons);
-  const totalBp = profile.exons.reduce((sum, e) => sum + e.lengthBp, 0);
-  const remainingBp = totalBp - removedBp;
-  return Math.floor(remainingBp / 3);
+  const totalCodingBp = totalGeneBp(profile);
+  const remainingBp = totalCodingBp - removedBp;
+  return Math.max(0, Math.floor((remainingBp - 3) / 3));
 }
 
 /**
- * Total coding sequence base pairs for a gene.
+ * Total coding sequence base pairs for a gene (CDS-only, excluding UTR).
  */
 export function totalGeneBp(profile: GeneProfile): number {
-  return profile.exons.reduce((sum, e) => sum + e.lengthBp, 0);
+  return profile.exons.reduce((sum, e) => sum + getCodingBp(profile, e), 0);
 }
 
 /**
