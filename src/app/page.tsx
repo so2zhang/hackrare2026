@@ -97,8 +97,7 @@ export default function Home() {
 
           {result ? (
             <div className="p-6 max-w-4xl">
-              <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-semibold text-foreground">Analysis Results</h2>
+              <div className="flex items-center justify-end mb-4">
                 <button
                   onClick={handleReset}
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"

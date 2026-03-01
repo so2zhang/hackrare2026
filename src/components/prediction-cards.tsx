@@ -61,38 +61,38 @@ function ScoreRing({ score, color, size = 96 }: { score: number; color: string; 
 
 export function FunctionalityCard({ score }: { score: FunctionalityScore }) {
   return (
-    <Card>
-      <CardContent className="pt-5 pb-5">
+    <Card className="overflow-hidden">
+      <CardContent className="pt-5 pb-5 px-5">
         <div className="flex items-start gap-4">
-          <ScoreRing score={score.overall} color={score.color} />
+          <ScoreRing score={score.overall} color={score.color} size={80} />
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-sm font-semibold">Functionality Score</h3>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-sm font-semibold truncate">Functionality</h3>
               <Badge
                 variant="outline"
-                className="text-[10px]"
+                className="text-[10px] shrink-0"
                 style={{ borderColor: SCORE_RING_COLORS[score.color], color: SCORE_RING_COLORS[score.color] }}
               >
                 {score.label}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+            <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
               {score.summary}
             </p>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="text-center p-1.5 rounded bg-muted/50">
-                <p className="text-[10px] text-muted-foreground">Frame</p>
-                <p className="text-sm font-semibold">{score.frameScore}%</p>
-              </div>
-              <div className="text-center p-1.5 rounded bg-muted/50">
-                <p className="text-[10px] text-muted-foreground">Length</p>
-                <p className="text-sm font-semibold">{score.lengthScore}%</p>
-              </div>
-              <div className="text-center p-1.5 rounded bg-muted/50">
-                <p className="text-[10px] text-muted-foreground">Domains</p>
-                <p className="text-sm font-semibold">{score.domainScore}%</p>
-              </div>
-            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2 mt-4">
+          <div className="text-center py-2 px-1 rounded-md bg-muted/50">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1">Frame</p>
+            <p className="text-sm font-semibold leading-none">{score.frameScore}%</p>
+          </div>
+          <div className="text-center py-2 px-1 rounded-md bg-muted/50">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1">Length</p>
+            <p className="text-sm font-semibold leading-none">{score.lengthScore}%</p>
+          </div>
+          <div className="text-center py-2 px-1 rounded-md bg-muted/50">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1">Domains</p>
+            <p className="text-sm font-semibold leading-none">{score.domainScore}%</p>
           </div>
         </div>
       </CardContent>
@@ -109,31 +109,31 @@ const SEVERITY_COLORS: Record<string, string> = {
 
 export function ClinicalCard({ correlation }: { correlation: ClinicalCorrelation }) {
   return (
-    <Card>
-      <CardContent className="pt-5 pb-5">
-        <div className="flex items-center gap-2 mb-3">
+    <Card className="overflow-hidden">
+      <CardContent className="pt-5 pb-5 px-5">
+        <div className="flex items-center gap-2 mb-4">
           <h3 className="text-sm font-semibold">Clinical Correlation</h3>
           {correlation.knownPattern && (
-            <Badge variant="secondary" className="text-[10px]">Known genotype</Badge>
+            <Badge variant="secondary" className="text-[10px] shrink-0">Known genotype</Badge>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          <div className="p-2.5 rounded-md border">
-            <p className="text-[10px] text-muted-foreground mb-0.5">Severity</p>
-            <p className="text-sm font-semibold" style={{ color: SEVERITY_COLORS[correlation.severity] }}>
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="py-2.5 px-3 rounded-md border">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1.5">Severity</p>
+            <p className="text-sm font-semibold leading-none" style={{ color: SEVERITY_COLORS[correlation.severity] }}>
               {correlation.severity}
             </p>
           </div>
-          <div className="p-2.5 rounded-md border">
-            <p className="text-[10px] text-muted-foreground mb-0.5">Ambulatory</p>
-            <p className="text-sm font-semibold" style={{ color: SEVERITY_COLORS[correlation.ambulatory === "Likely" ? "Mild" : correlation.ambulatory === "Possible" ? "Moderate" : correlation.ambulatory === "Unlikely" ? "Severe" : "Unknown"] }}>
+          <div className="py-2.5 px-3 rounded-md border">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1.5">Ambulatory</p>
+            <p className="text-sm font-semibold leading-none" style={{ color: SEVERITY_COLORS[correlation.ambulatory === "Likely" ? "Mild" : correlation.ambulatory === "Possible" ? "Moderate" : correlation.ambulatory === "Unlikely" ? "Severe" : "Unknown"] }}>
               {correlation.ambulatory}
             </p>
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-4">
           {correlation.precedent}
         </p>
       </CardContent>
@@ -149,42 +149,42 @@ const FEASIBILITY_COLORS: Record<string, string> = {
 
 export function TherapeuticCard({ context }: { context: TherapeuticContext }) {
   return (
-    <Card>
-      <CardContent className="pt-5 pb-5">
-        <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-sm font-semibold">Therapeutic Feasibility</h3>
+    <Card className="overflow-hidden">
+      <CardContent className="pt-5 pb-5 px-5">
+        <div className="flex items-center gap-2 mb-4">
+          <h3 className="text-sm font-semibold truncate">Therapeutic Feasibility</h3>
           <Badge
             variant="outline"
-            className="text-[10px]"
+            className="text-[10px] shrink-0"
             style={{ borderColor: FEASIBILITY_COLORS[context.feasibility], color: FEASIBILITY_COLORS[context.feasibility] }}
           >
             {context.feasibility}
           </Badge>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          <div className="p-2.5 rounded-md border text-center">
-            <p className="text-[10px] text-muted-foreground mb-0.5">Exons to Skip</p>
-            <p className="text-sm font-semibold">{context.exonsToSkip || "—"}</p>
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          <div className="py-2.5 px-1 rounded-md border text-center">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1.5">Exons to Skip</p>
+            <p className="text-sm font-semibold leading-none">{context.exonsToSkip || "—"}</p>
           </div>
-          <div className="p-2.5 rounded-md border text-center">
-            <p className="text-[10px] text-muted-foreground mb-0.5">Approved Drug</p>
-            <p className="text-sm font-semibold" style={{ color: context.hasApprovedDrug ? "#10b981" : "#94a3b8" }}>
+          <div className="py-2.5 px-1 rounded-md border text-center">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1.5">Approved</p>
+            <p className="text-sm font-semibold leading-none" style={{ color: context.hasApprovedDrug ? "#10b981" : "#94a3b8" }}>
               {context.hasApprovedDrug ? "Yes" : "No"}
             </p>
           </div>
-          <div className="p-2.5 rounded-md border text-center">
-            <p className="text-[10px] text-muted-foreground mb-0.5">In Pipeline</p>
-            <p className="text-sm font-semibold">{context.pipelineOptions || "—"}</p>
+          <div className="py-2.5 px-1 rounded-md border text-center">
+            <p className="text-[10px] text-muted-foreground leading-none mb-1.5">Pipeline</p>
+            <p className="text-sm font-semibold leading-none">{context.pipelineOptions || "—"}</p>
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
           {context.feasibilityReason}
         </p>
 
         {context.closestDrug && (
-          <div className="mt-2.5 p-2 rounded-md bg-muted/50 flex items-center gap-2">
+          <div className="mt-3 py-2 px-2.5 rounded-md bg-muted/50 flex items-center gap-2">
             <Badge variant={context.closestDrug.status === "approved" ? "default" : "secondary"} className="text-[10px] shrink-0">
               {context.closestDrug.status === "approved" ? "FDA Approved" : context.closestDrug.status.toUpperCase()}
             </Badge>

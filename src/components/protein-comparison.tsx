@@ -23,55 +23,55 @@ export function ProteinComparison({ simulation, geneName }: ProteinComparisonPro
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Protein Comparison</CardTitle>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Protein Comparison</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-3">
+      <CardContent className="space-y-5">
+        <div className="space-y-4">
           <div>
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-xs mb-1.5">
               <span className="text-muted-foreground">Wildtype {geneName}</span>
-              <span className="font-mono">{wildtypeLength.toLocaleString()} aa</span>
+              <span className="font-mono font-medium">{wildtypeLength.toLocaleString()} aa</span>
             </div>
-            <div className="h-6 bg-emerald-400 rounded" style={{ width: `${wtBarWidth}%` }} />
+            <div className="h-5 bg-emerald-400 rounded-sm" style={{ width: `${wtBarWidth}%` }} />
           </div>
 
           <div>
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-xs mb-1.5">
               <span className="text-muted-foreground">Predicted protein</span>
-              <span className="font-mono">{predictedLength.toLocaleString()} aa</span>
+              <span className="font-mono font-medium">{predictedLength.toLocaleString()} aa</span>
             </div>
-            <div className="relative h-6">
+            <div className="relative h-5">
               <div
-                className="h-6 bg-amber-400 rounded"
-                style={{ width: `${predBarWidth}%` }}
+                className="h-5 bg-amber-400 rounded-sm"
+                style={{ width: `${Math.max(2, predBarWidth)}%` }}
               />
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Badge variant={isInFrame ? "default" : "destructive"}>
+          <Badge variant={isInFrame ? "default" : "destructive"} className="text-xs">
             {isInFrame ? "In-frame" : "Frameshift (truncated)"}
           </Badge>
-          <Badge variant="secondary">{percentRetained}% of wildtype</Badge>
+          <Badge variant="secondary" className="text-xs">{percentRetained}% of wildtype</Badge>
           {gapRegion && (
-            <Badge variant="outline">
+            <Badge variant="outline" className="text-xs">
               Gap: exons {gapRegion.start}-{gapRegion.end}
             </Badge>
           )}
         </div>
 
         {isInFrame && percentRetained >= 70 && (
-          <p className="text-sm text-emerald-700 dark:text-emerald-400">
+          <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-relaxed">
             The predicted protein retains {percentRetained}% of the wildtype
-            length. Becker-type dystrophin with this level of truncation has
-            historically been associated with milder clinical phenotypes.
+            length. This level of truncation has historically been associated
+            with milder clinical phenotypes.
           </p>
         )}
 
         {isInFrame && percentRetained < 70 && percentRetained >= 50 && (
-          <p className="text-sm text-amber-700 dark:text-amber-400">
+          <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
             The predicted protein retains {percentRetained}% of the wildtype
             length. Function may be significantly reduced depending on which
             domains are lost.
@@ -79,7 +79,7 @@ export function ProteinComparison({ simulation, geneName }: ProteinComparisonPro
         )}
 
         {!isInFrame && (
-          <p className="text-sm text-red-700 dark:text-red-400">
+          <p className="text-xs text-red-700 dark:text-red-400 leading-relaxed">
             The reading frame is disrupted. Without correction, this would produce
             a truncated, non-functional protein or trigger nonsense-mediated decay.
           </p>
