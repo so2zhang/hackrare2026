@@ -5,77 +5,725 @@
   "totalExons": 72,
   "proteinLength": 5202,
   "exons": [
-    { "number": 1,  "startPhase": 0, "endPhase": 0, "lengthBp": 141, "skippable": false, "criticalDomains": ["signal-peptide"] },
-    { "number": 2,  "startPhase": 0, "endPhase": 2, "lengthBp": 182, "skippable": true,  "criticalDomains": ["laminin-G-like-1"] },
-    { "number": 3,  "startPhase": 2, "endPhase": 0, "lengthBp": 130, "skippable": true,  "criticalDomains": ["laminin-G-like-1"] },
-    { "number": 4,  "startPhase": 0, "endPhase": 1, "lengthBp": 157, "skippable": true,  "criticalDomains": ["laminin-EGF-1"] },
-    { "number": 5,  "startPhase": 1, "endPhase": 0, "lengthBp": 188, "skippable": true,  "criticalDomains": ["laminin-EGF-1"] },
-    { "number": 6,  "startPhase": 0, "endPhase": 2, "lengthBp": 236, "skippable": true,  "criticalDomains": ["laminin-G-like-2"] },
-    { "number": 7,  "startPhase": 2, "endPhase": 1, "lengthBp": 139, "skippable": true,  "criticalDomains": ["laminin-G-like-2"] },
-    { "number": 8,  "startPhase": 1, "endPhase": 0, "lengthBp": 110, "skippable": true,  "criticalDomains": ["laminin-EGF-2"] },
-    { "number": 9,  "startPhase": 0, "endPhase": 2, "lengthBp": 149, "skippable": true,  "criticalDomains": ["laminin-EGF-2"] },
-    { "number": 10, "startPhase": 2, "endPhase": 0, "lengthBp": 124, "skippable": true,  "criticalDomains": ["FN3-1"] },
-    { "number": 11, "startPhase": 0, "endPhase": 1, "lengthBp": 133, "skippable": true,  "criticalDomains": ["FN3-1"] },
-    { "number": 12, "startPhase": 1, "endPhase": 0, "lengthBp": 176, "skippable": true,  "criticalDomains": ["FN3-1"] },
-    { "number": 13, "startPhase": 0, "endPhase": 0, "lengthBp": 342, "skippable": true,  "criticalDomains": ["FN3-2"] },
-    { "number": 14, "startPhase": 0, "endPhase": 1, "lengthBp": 187, "skippable": true,  "criticalDomains": ["FN3-3"] },
-    { "number": 15, "startPhase": 1, "endPhase": 0, "lengthBp": 113, "skippable": true,  "criticalDomains": ["FN3-3"] },
-    { "number": 16, "startPhase": 0, "endPhase": 2, "lengthBp": 152, "skippable": true,  "criticalDomains": ["FN3-4"] },
-    { "number": 17, "startPhase": 2, "endPhase": 0, "lengthBp": 148, "skippable": true,  "criticalDomains": ["FN3-4"] },
-    { "number": 18, "startPhase": 0, "endPhase": 1, "lengthBp": 106, "skippable": true,  "criticalDomains": ["FN3-5"] },
-    { "number": 19, "startPhase": 1, "endPhase": 0, "lengthBp": 167, "skippable": true,  "criticalDomains": ["FN3-5"] },
-    { "number": 20, "startPhase": 0, "endPhase": 2, "lengthBp": 140, "skippable": true,  "criticalDomains": ["FN3-6"] },
-    { "number": 21, "startPhase": 2, "endPhase": 0, "lengthBp": 133, "skippable": true,  "criticalDomains": ["FN3-6"] },
-    { "number": 22, "startPhase": 0, "endPhase": 1, "lengthBp": 168, "skippable": true,  "criticalDomains": ["FN3-7"] },
-    { "number": 23, "startPhase": 1, "endPhase": 0, "lengthBp": 155, "skippable": true,  "criticalDomains": ["FN3-7"] },
-    { "number": 24, "startPhase": 0, "endPhase": 0, "lengthBp": 186, "skippable": true,  "criticalDomains": ["FN3-8"] },
-    { "number": 25, "startPhase": 0, "endPhase": 1, "lengthBp": 142, "skippable": true,  "criticalDomains": ["FN3-9"] },
-    { "number": 26, "startPhase": 1, "endPhase": 0, "lengthBp": 158, "skippable": true,  "criticalDomains": ["FN3-9"] },
-    { "number": 27, "startPhase": 0, "endPhase": 2, "lengthBp": 131, "skippable": true,  "criticalDomains": ["FN3-10"] },
-    { "number": 28, "startPhase": 2, "endPhase": 0, "lengthBp": 157, "skippable": true,  "criticalDomains": ["FN3-10"] },
-    { "number": 29, "startPhase": 0, "endPhase": 1, "lengthBp": 163, "skippable": true,  "criticalDomains": ["FN3-11"] },
-    { "number": 30, "startPhase": 1, "endPhase": 0, "lengthBp": 140, "skippable": true,  "criticalDomains": ["FN3-11"] },
-    { "number": 31, "startPhase": 0, "endPhase": 0, "lengthBp": 177, "skippable": true,  "criticalDomains": ["FN3-12"] },
-    { "number": 32, "startPhase": 0, "endPhase": 1, "lengthBp": 145, "skippable": true,  "criticalDomains": ["FN3-13"] },
-    { "number": 33, "startPhase": 1, "endPhase": 0, "lengthBp": 134, "skippable": true,  "criticalDomains": ["FN3-13"] },
-    { "number": 34, "startPhase": 0, "endPhase": 2, "lengthBp": 128, "skippable": true,  "criticalDomains": ["FN3-14"] },
-    { "number": 35, "startPhase": 2, "endPhase": 0, "lengthBp": 151, "skippable": true,  "criticalDomains": ["FN3-14"] },
-    { "number": 36, "startPhase": 0, "endPhase": 1, "lengthBp": 199, "skippable": true,  "criticalDomains": ["FN3-15"] },
-    { "number": 37, "startPhase": 1, "endPhase": 0, "lengthBp": 176, "skippable": true,  "criticalDomains": ["FN3-15"] },
-    { "number": 38, "startPhase": 0, "endPhase": 0, "lengthBp": 153, "skippable": true,  "criticalDomains": ["FN3-16"] },
-    { "number": 39, "startPhase": 0, "endPhase": 1, "lengthBp": 166, "skippable": true,  "criticalDomains": ["FN3-17"] },
-    { "number": 40, "startPhase": 1, "endPhase": 0, "lengthBp": 143, "skippable": true,  "criticalDomains": ["FN3-17"] },
-    { "number": 41, "startPhase": 0, "endPhase": 2, "lengthBp": 131, "skippable": true,  "criticalDomains": ["FN3-18"] },
-    { "number": 42, "startPhase": 2, "endPhase": 0, "lengthBp": 169, "skippable": true,  "criticalDomains": ["FN3-18"] },
-    { "number": 43, "startPhase": 0, "endPhase": 1, "lengthBp": 155, "skippable": true,  "criticalDomains": ["FN3-19"] },
-    { "number": 44, "startPhase": 1, "endPhase": 0, "lengthBp": 138, "skippable": true,  "criticalDomains": ["FN3-19"] },
-    { "number": 45, "startPhase": 0, "endPhase": 0, "lengthBp": 183, "skippable": true,  "criticalDomains": ["FN3-20"] },
-    { "number": 46, "startPhase": 0, "endPhase": 1, "lengthBp": 147, "skippable": true,  "criticalDomains": ["FN3-21"] },
-    { "number": 47, "startPhase": 1, "endPhase": 0, "lengthBp": 161, "skippable": true,  "criticalDomains": ["FN3-21"] },
-    { "number": 48, "startPhase": 0, "endPhase": 2, "lengthBp": 128, "skippable": true,  "criticalDomains": ["FN3-22"] },
-    { "number": 49, "startPhase": 2, "endPhase": 0, "lengthBp": 172, "skippable": true,  "criticalDomains": ["FN3-22"] },
-    { "number": 50, "startPhase": 0, "endPhase": 1, "lengthBp": 155, "skippable": true,  "criticalDomains": ["FN3-23"] },
-    { "number": 51, "startPhase": 1, "endPhase": 0, "lengthBp": 138, "skippable": true,  "criticalDomains": ["FN3-23"] },
-    { "number": 52, "startPhase": 0, "endPhase": 0, "lengthBp": 186, "skippable": true,  "criticalDomains": ["FN3-24"] },
-    { "number": 53, "startPhase": 0, "endPhase": 1, "lengthBp": 149, "skippable": true,  "criticalDomains": ["FN3-25"] },
-    { "number": 54, "startPhase": 1, "endPhase": 0, "lengthBp": 167, "skippable": true,  "criticalDomains": ["FN3-25"] },
-    { "number": 55, "startPhase": 0, "endPhase": 2, "lengthBp": 142, "skippable": true,  "criticalDomains": ["FN3-26"] },
-    { "number": 56, "startPhase": 2, "endPhase": 0, "lengthBp": 158, "skippable": true,  "criticalDomains": ["FN3-26"] },
-    { "number": 57, "startPhase": 0, "endPhase": 1, "lengthBp": 173, "skippable": true,  "criticalDomains": ["FN3-27"] },
-    { "number": 58, "startPhase": 1, "endPhase": 0, "lengthBp": 145, "skippable": true,  "criticalDomains": ["FN3-27"] },
-    { "number": 59, "startPhase": 0, "endPhase": 0, "lengthBp": 162, "skippable": true,  "criticalDomains": ["FN3-28"] },
-    { "number": 60, "startPhase": 0, "endPhase": 1, "lengthBp": 148, "skippable": true,  "criticalDomains": ["FN3-29"] },
-    { "number": 61, "startPhase": 1, "endPhase": 0, "lengthBp": 156, "skippable": true,  "criticalDomains": ["FN3-29"] },
-    { "number": 62, "startPhase": 0, "endPhase": 2, "lengthBp": 137, "skippable": true,  "criticalDomains": ["FN3-30"] },
-    { "number": 63, "startPhase": 2, "endPhase": 0, "lengthBp": 170, "skippable": true,  "criticalDomains": ["FN3-30"] },
-    { "number": 64, "startPhase": 0, "endPhase": 0, "lengthBp": 195, "skippable": false, "criticalDomains": ["TM-domain"] },
-    { "number": 65, "startPhase": 0, "endPhase": 1, "lengthBp": 123, "skippable": false, "criticalDomains": ["TM-domain"] },
-    { "number": 66, "startPhase": 1, "endPhase": 0, "lengthBp": 146, "skippable": false, "criticalDomains": ["intracellular"] },
-    { "number": 67, "startPhase": 0, "endPhase": 0, "lengthBp": 132, "skippable": false, "criticalDomains": ["intracellular"] },
-    { "number": 68, "startPhase": 0, "endPhase": 1, "lengthBp": 155, "skippable": false, "criticalDomains": ["PDZ-binding"] },
-    { "number": 69, "startPhase": 1, "endPhase": 0, "lengthBp": 168, "skippable": false, "criticalDomains": ["PDZ-binding"] },
-    { "number": 70, "startPhase": 0, "endPhase": 0, "lengthBp": 183, "skippable": false, "criticalDomains": ["PDZ-binding"] },
-    { "number": 71, "startPhase": 0, "endPhase": 0, "lengthBp": 208, "skippable": false, "criticalDomains": ["C-terminal"] },
-    { "number": 72, "startPhase": 0, "endPhase": 0, "lengthBp": 645, "skippable": false, "criticalDomains": ["C-terminal"] }
+    {
+      "number": 1,
+      "startPhase": 0,
+      "endPhase": 0,
+      "lengthBp": 0,
+      "skippable": false,
+      "criticalDomains": [
+        "signal-peptide"
+      ]
+    },
+    {
+      "number": 2,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 485,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-G-like-1"
+      ]
+    },
+    {
+      "number": 3,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 166,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-G-like-1"
+      ]
+    },
+    {
+      "number": 4,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 133,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-EGF-1"
+      ]
+    },
+    {
+      "number": 5,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 64,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-EGF-1"
+      ]
+    },
+    {
+      "number": 6,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 295,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-G-like-2"
+      ]
+    },
+    {
+      "number": 7,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 185,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-G-like-2"
+      ]
+    },
+    {
+      "number": 8,
+      "startPhase": 2,
+      "endPhase": 2,
+      "lengthBp": 222,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-EGF-2"
+      ]
+    },
+    {
+      "number": 9,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 94,
+      "skippable": true,
+      "criticalDomains": [
+        "laminin-EGF-2"
+      ]
+    },
+    {
+      "number": 10,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 196,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-1"
+      ]
+    },
+    {
+      "number": 11,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 131,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-1"
+      ]
+    },
+    {
+      "number": 12,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 196,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-1"
+      ]
+    },
+    {
+      "number": 13,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 642,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-2"
+      ]
+    },
+    {
+      "number": 14,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 184,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-3"
+      ]
+    },
+    {
+      "number": 15,
+      "startPhase": 2,
+      "endPhase": 1,
+      "lengthBp": 164,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-3"
+      ]
+    },
+    {
+      "number": 16,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 159,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-4"
+      ]
+    },
+    {
+      "number": 17,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 495,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-4"
+      ]
+    },
+    {
+      "number": 18,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 270,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-5"
+      ]
+    },
+    {
+      "number": 19,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 170,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-5"
+      ]
+    },
+    {
+      "number": 20,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 145,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-6"
+      ]
+    },
+    {
+      "number": 21,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 231,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-6"
+      ]
+    },
+    {
+      "number": 22,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 131,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-7"
+      ]
+    },
+    {
+      "number": 23,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 127,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-7"
+      ]
+    },
+    {
+      "number": 24,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 102,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-8"
+      ]
+    },
+    {
+      "number": 25,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 180,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-9"
+      ]
+    },
+    {
+      "number": 26,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 131,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-9"
+      ]
+    },
+    {
+      "number": 27,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 274,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-10"
+      ]
+    },
+    {
+      "number": 28,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 204,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-10"
+      ]
+    },
+    {
+      "number": 29,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 81,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-11"
+      ]
+    },
+    {
+      "number": 30,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 192,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-11"
+      ]
+    },
+    {
+      "number": 31,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 114,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-12"
+      ]
+    },
+    {
+      "number": 32,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 162,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-13"
+      ]
+    },
+    {
+      "number": 33,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 160,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-13"
+      ]
+    },
+    {
+      "number": 34,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 172,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-14"
+      ]
+    },
+    {
+      "number": 35,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 148,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-14"
+      ]
+    },
+    {
+      "number": 36,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 152,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-15"
+      ]
+    },
+    {
+      "number": 37,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 163,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-15"
+      ]
+    },
+    {
+      "number": 38,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 180,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-16"
+      ]
+    },
+    {
+      "number": 39,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 151,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-17"
+      ]
+    },
+    {
+      "number": 40,
+      "startPhase": 2,
+      "endPhase": 1,
+      "lengthBp": 143,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-17"
+      ]
+    },
+    {
+      "number": 41,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 629,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-18"
+      ]
+    },
+    {
+      "number": 42,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 335,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-18"
+      ]
+    },
+    {
+      "number": 43,
+      "startPhase": 2,
+      "endPhase": 2,
+      "lengthBp": 123,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-19"
+      ]
+    },
+    {
+      "number": 44,
+      "startPhase": 2,
+      "endPhase": 1,
+      "lengthBp": 164,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-19"
+      ]
+    },
+    {
+      "number": 45,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 210,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-20"
+      ]
+    },
+    {
+      "number": 46,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 203,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-21"
+      ]
+    },
+    {
+      "number": 47,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 113,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-21"
+      ]
+    },
+    {
+      "number": 48,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 199,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-22"
+      ]
+    },
+    {
+      "number": 49,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 169,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-22"
+      ]
+    },
+    {
+      "number": 50,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 219,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-23"
+      ]
+    },
+    {
+      "number": 51,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 224,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-23"
+      ]
+    },
+    {
+      "number": 52,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 205,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-24"
+      ]
+    },
+    {
+      "number": 53,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 198,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-25"
+      ]
+    },
+    {
+      "number": 54,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 155,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-25"
+      ]
+    },
+    {
+      "number": 55,
+      "startPhase": 0,
+      "endPhase": 1,
+      "lengthBp": 199,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-26"
+      ]
+    },
+    {
+      "number": 56,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 108,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-26"
+      ]
+    },
+    {
+      "number": 57,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 184,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-27"
+      ]
+    },
+    {
+      "number": 58,
+      "startPhase": 2,
+      "endPhase": 1,
+      "lengthBp": 158,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-27"
+      ]
+    },
+    {
+      "number": 59,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 159,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-28"
+      ]
+    },
+    {
+      "number": 60,
+      "startPhase": 1,
+      "endPhase": 2,
+      "lengthBp": 163,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-29"
+      ]
+    },
+    {
+      "number": 61,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 355,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-29"
+      ]
+    },
+    {
+      "number": 62,
+      "startPhase": 0,
+      "endPhase": 0,
+      "lengthBp": 228,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-30"
+      ]
+    },
+    {
+      "number": 63,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 1517,
+      "skippable": true,
+      "criticalDomains": [
+        "FN3-30"
+      ]
+    },
+    {
+      "number": 64,
+      "startPhase": 2,
+      "endPhase": 0,
+      "lengthBp": 322,
+      "skippable": false,
+      "criticalDomains": [
+        "TM-domain"
+      ]
+    },
+    {
+      "number": 65,
+      "startPhase": 0,
+      "endPhase": 0,
+      "lengthBp": 210,
+      "skippable": false,
+      "criticalDomains": [
+        "TM-domain"
+      ]
+    },
+    {
+      "number": 66,
+      "startPhase": 0,
+      "endPhase": 2,
+      "lengthBp": 239,
+      "skippable": false,
+      "criticalDomains": [
+        "intracellular"
+      ]
+    },
+    {
+      "number": 67,
+      "startPhase": 2,
+      "endPhase": 1,
+      "lengthBp": 209,
+      "skippable": false,
+      "criticalDomains": [
+        "intracellular"
+      ]
+    },
+    {
+      "number": 68,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 177,
+      "skippable": false,
+      "criticalDomains": [
+        "PDZ-binding"
+      ]
+    },
+    {
+      "number": 69,
+      "startPhase": 1,
+      "endPhase": 1,
+      "lengthBp": 84,
+      "skippable": false,
+      "criticalDomains": [
+        "PDZ-binding"
+      ]
+    },
+    {
+      "number": 70,
+      "startPhase": 1,
+      "endPhase": 0,
+      "lengthBp": 245,
+      "skippable": false,
+      "criticalDomains": [
+        "PDZ-binding"
+      ]
+    },
+    {
+      "number": 71,
+      "startPhase": 0,
+      "endPhase": 0,
+      "lengthBp": 222,
+      "skippable": false,
+      "criticalDomains": [
+        "C-terminal"
+      ]
+    },
+    {
+      "number": 72,
+      "startPhase": 0,
+      "endPhase": 0,
+      "lengthBp": 90,
+      "skippable": false,
+      "criticalDomains": [
+        "C-terminal"
+      ]
+    }
   ]
 }
