@@ -120,7 +120,7 @@ export function ClinicalCard({ correlation }: { correlation: ClinicalCorrelation
 
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div className="p-2.5 rounded-md border">
-            <p className="text-[10px] text-muted-foreground mb-0.5">Expected Severity</p>
+            <p className="text-[10px] text-muted-foreground mb-0.5">Severity</p>
             <p className="text-sm font-semibold" style={{ color: SEVERITY_COLORS[correlation.severity] }}>
               {correlation.severity}
             </p>

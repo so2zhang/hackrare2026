@@ -34,10 +34,17 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
     <div className="space-y-6">
       {/* Summary Card */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl">Analysis Results</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl">Analysis Results</CardTitle>
+          <div className="flex items-center gap-2 mt-1">
             {bestStrategy && <ConfidenceBadge level={bestStrategy.confidence} />}
+            <p className="text-xs text-muted-foreground">
+              {bestStrategy
+                ? `Best strategy: skip ${bestStrategy.exonsToSkip.length > 1 ? "exons" : "exon"} ${bestStrategy.exonsToSkip.join(", ")} — ${bestStrategy.percentWildtype}% protein retained`
+                : isFrameshift
+                  ? "No viable exon-skipping strategy found"
+                  : "Mutation is already in-frame"}
+            </p>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
