@@ -44,7 +44,9 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
               ? `Best strategy: skip ${bestStrategy.exonsToSkip.length > 1 ? "exons" : "exon"} ${bestStrategy.exonsToSkip.join(", ")} — ${bestStrategy.percentWildtype}% protein retained`
               : isFrameshift
                 ? "No viable exon-skipping strategy found"
-                : "Mutation is already in-frame"}
+                : alreadyInFrame
+                  ? "Mutation is already in-frame"
+                  : `In-frame ${mutation.mutationType} — skip strategy available`}
           </p>
         </CardHeader>
         <CardContent>
@@ -132,7 +134,7 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
       )}
 
       {/* Skip Strategies */}
-      {isFrameshift && (
+      {(isFrameshift || strategies.length > 0) && (
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">

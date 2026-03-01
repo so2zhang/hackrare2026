@@ -27,7 +27,9 @@ export function analyzeDMD(mutation: MutationInput): AnalysisResult {
   const frameShift = calculateFrameShift(profile, mutation.affectedExons);
   const isFs = frameShift !== 0;
 
-  if (!isFs) {
+  const isDeletion = mutation.mutationType === "deletion";
+
+  if (!isFs && isDeletion) {
     warnings.push(
       "This patient may already have a Becker-like phenotype — no skip needed, consider dystrophin-stabilizing approaches instead."
     );
@@ -47,11 +49,11 @@ export function analyzeDMD(mutation: MutationInput): AnalysisResult {
   );
   if (inHotspot) {
     warnings.push(
-      "Mutation is in the exon 45-55 hotspot region — this is the most common DMD deletion area and multiple exon-skipping therapies are in development."
+      "Mutation is in the exon 45-55 hotspot region — this is the most common DMD mutation area and multiple exon-skipping therapies are in development."
     );
   }
 
-  const strategies = isFs ? findSkipStrategies(profile, mutation) : [];
+  const strategies = (isFs || !isDeletion) ? findSkipStrategies(profile, mutation) : [];
   const bestStrategy = strategies.length > 0 ? strategies[0] : null;
 
   const therapies = bestStrategy
@@ -62,7 +64,7 @@ export function analyzeDMD(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
-    alreadyInFrame: !isFs,
+    alreadyInFrame: !isFs && isDeletion,
     strategies,
     bestStrategy,
     therapies,

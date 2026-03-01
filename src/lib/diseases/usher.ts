@@ -30,7 +30,9 @@ export function analyzeUsher(mutation: MutationInput): AnalysisResult {
   const frameShift = calculateFrameShift(profile, mutation.affectedExons);
   const isFs = frameShift !== 0;
 
-  if (!isFs) {
+  const isDeletion = mutation.mutationType === "deletion";
+
+  if (!isFs && isDeletion) {
     warnings.push(
       "This deletion is in-frame. The FN3 repeat region is partially redundant, so a shortened protein may retain partial function."
     );
@@ -59,7 +61,7 @@ export function analyzeUsher(mutation: MutationInput): AnalysisResult {
     }
   }
 
-  const strategies = isFs ? findSkipStrategies(profile, mutation) : [];
+  const strategies = (isFs || !isDeletion) ? findSkipStrategies(profile, mutation) : [];
   const bestStrategy = strategies.length > 0 ? strategies[0] : null;
 
   const therapies = bestStrategy
@@ -70,7 +72,7 @@ export function analyzeUsher(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
-    alreadyInFrame: !isFs,
+    alreadyInFrame: !isFs && isDeletion,
     strategies,
     bestStrategy,
     therapies,

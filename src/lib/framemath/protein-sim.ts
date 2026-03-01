@@ -1,9 +1,9 @@
-import { GeneProfile, ExonInfo } from "./types";
+import { GeneProfile, ExonInfo, MutationType } from "./types";
 import { getCodingBp } from "./engine";
 
 export interface ProteinSegment {
   exonNumber: number;
-  status: "present" | "deleted" | "skipped";
+  status: "present" | "deleted" | "duplicated" | "inserted" | "skipped";
   aminoAcids: number;
   domains: string[];
 }
@@ -19,16 +19,22 @@ export interface ProteinSimulation {
 
 /**
  * Simulate the protein that would result from the mutation + skip strategy.
- * Uses CDS-only bp (excluding UTR) so the predicted protein length is
- * always <= the wildtype.
+ * Uses CDS-only bp (excluding UTR).
+ *
+ * Deletion:    affected exons are missing → skip restores frame by removing more.
+ * Duplication: affected exons are present twice → skip removes all copies (ASO
+ *              can't distinguish original from duplicate).
+ *              Net result after skipping the duplicated exons = same as deletion.
  */
 export function simulateProtein(
   profile: GeneProfile,
-  deletedExons: number[],
-  skippedExons: number[]
+  affectedExons: number[],
+  skippedExons: number[],
+  mutationType: MutationType = "deletion"
 ): ProteinSimulation {
-  const deletedSet = new Set(deletedExons);
+  const affectedSet = new Set(affectedExons);
   const skippedSet = new Set(skippedExons);
+  const isDeletion = mutationType === "deletion";
 
   const segments: ProteinSegment[] = [];
   let totalRemovedCodingBp = 0;
@@ -41,17 +47,30 @@ export function simulateProtein(
     totalCodingBp += codingBp;
 
     let status: ProteinSegment["status"] = "present";
+    const isAffected = affectedSet.has(exon.number);
+    const isSkipped = skippedSet.has(exon.number);
 
-    if (deletedSet.has(exon.number)) {
-      status = "deleted";
-      totalRemovedCodingBp += codingBp;
-      if (gapStart === null) gapStart = exon.number;
-      gapEnd = exon.number;
-    } else if (skippedSet.has(exon.number)) {
-      status = "skipped";
-      totalRemovedCodingBp += codingBp;
-      if (gapStart === null) gapStart = exon.number;
-      gapEnd = exon.number;
+    if (isDeletion) {
+      if (isAffected) {
+        status = "deleted";
+        totalRemovedCodingBp += codingBp;
+        if (gapStart === null) gapStart = exon.number;
+        gapEnd = exon.number;
+      } else if (isSkipped) {
+        status = "skipped";
+        totalRemovedCodingBp += codingBp;
+        if (gapStart === null) gapStart = exon.number;
+        gapEnd = exon.number;
+      }
+    } else {
+      if (isSkipped) {
+        status = "skipped";
+        totalRemovedCodingBp += codingBp;
+        if (gapStart === null) gapStart = exon.number;
+        gapEnd = exon.number;
+      } else if (isAffected) {
+        status = mutationType === "duplication" ? "duplicated" : "inserted";
+      }
     }
 
     segments.push({

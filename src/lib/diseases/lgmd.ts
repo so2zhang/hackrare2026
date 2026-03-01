@@ -29,7 +29,9 @@ export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
   const frameShift = calculateFrameShift(profile, mutation.affectedExons);
   const isFs = frameShift !== 0;
 
-  if (!isFs) {
+  const isDeletion = mutation.mutationType === "deletion";
+
+  if (!isFs && isDeletion) {
     warnings.push(
       "This deletion is in-frame. No exon skip needed; consider symptomatic care or experimental membrane-repair approaches."
     );
@@ -61,7 +63,7 @@ export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
     "Note: Exon skipping therapy for dysferlin is still in preclinical/early research stages. Results should be interpreted with caution."
   );
 
-  const strategies = isFs ? findSkipStrategies(profile, mutation) : [];
+  const strategies = (isFs || !isDeletion) ? findSkipStrategies(profile, mutation) : [];
   const bestStrategy = strategies.length > 0 ? strategies[0] : null;
 
   const therapies = bestStrategy
@@ -72,7 +74,7 @@ export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
-    alreadyInFrame: !isFs,
+    alreadyInFrame: !isFs && isDeletion,
     strategies,
     bestStrategy,
     therapies,

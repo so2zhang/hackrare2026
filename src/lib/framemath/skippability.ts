@@ -20,11 +20,13 @@ export function isExonSkippableForMutation(
   const exon = getExon(profile, exonNum);
   if (!exon) return false;
 
-  // Base: static skippable from curated exon table
   if (!exon.skippable) return false;
 
-  // Exon cannot be in the deleted set
-  if (mutation.affectedExons.includes(exonNum)) return false;
+  // For deletions: can't skip an exon that's already deleted
+  // For duplications/insertions: affected exons are still present, so skipping is valid
+  if (mutation.mutationType === "deletion" && mutation.affectedExons.includes(exonNum)) {
+    return false;
+  }
 
   // Future: mutation-dependent edge cases
   // e.g. if exon is too far from deletion, ASO delivery may be impractical
