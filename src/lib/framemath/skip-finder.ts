@@ -93,6 +93,12 @@ export function findSkipStrategies(
     if (a.exonsToSkip.length !== b.exonsToSkip.length) {
       return a.exonsToSkip.length - b.exonsToSkip.length;
     }
+    // Prefer skip targets closest to the deletion boundary (clinically practical)
+    const aProximity = Math.min(...a.exonsToSkip);
+    const bProximity = Math.min(...b.exonsToSkip);
+    if (aProximity !== bProximity) {
+      return aProximity - bProximity;
+    }
     return b.percentWildtype - a.percentWildtype;
   });
 

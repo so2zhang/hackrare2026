@@ -67,22 +67,22 @@ const VALIDATION_CASES: ValidationCase[] = [
     },
   },
   {
-    title: "USH2A Exon 13 Mutation → Exon 13 Skip",
+    title: "DMD Exon 44 Deletion → Exon 45 Skip",
     mutation: {
-      gene: "USH2A",
+      gene: "DMD",
       mutationType: "deletion",
-      affectedExons: [13],
+      affectedExons: [44],
     },
     literature: {
-      source: "Dulla et al., Mol Ther Nucleic Acids 2024; ProQR STELLAR trial",
-      url: "https://pubmed.ncbi.nlm.nih.gov/34478958/",
-      expectedSkipExons: [14],
+      source: "Sarepta Therapeutics FDA label; Wagner et al., NEJM 2021",
+      url: "https://pubmed.ncbi.nlm.nih.gov/34449185/",
+      expectedSkipExons: [45],
       expectedFrameRestored: true,
-      expectedPercentWildtype: { min: 90, max: 98 },
-      expectedPhenotype: "Retained usherin function (improved vision)",
-      fdaApprovedDrug: "QR-421a (Ultevursen) — Phase 2/3 clinical trials",
+      expectedPercentWildtype: { min: 93, max: 99 },
+      expectedPhenotype: "Becker-like (mild)",
+      fdaApprovedDrug: "Casimersen (Amondys 45) — FDA approved 2021",
       notes:
-        "The c.2299delG mutation in exon 13 is the most common pathogenic USH2A variant. Exon 13 encodes part of the FN3 repeat region, which is partially redundant. QR-421a/Ultevursen targets exon 13 skipping and has shown improvements in retinal function in clinical trials (STELLAR, SIRIUS).",
+        "Exon 44 deletion causes a +1bp frameshift. Skipping exon 45 restores the reading frame with only 324bp removed from the central rod domain (spectrin repeats 17-18). Casimersen is an FDA-approved PMO targeting exon 45, applicable to ~8% of DMD patients. Clinical data shows increased dystrophin expression in skeletal muscle.",
     },
   },
 ];
