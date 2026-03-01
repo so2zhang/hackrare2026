@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FrameShift Rx — Exon Skipping Analysis Tool",
+  title: "Becker — Exon Skipping Analysis Tool",
   description:
-    "Analyze frameshift mutations in neuromuscular disease genes and find exon-skipping therapeutic strategies. Supports DMD, LGMD, Usher Syndrome, and Myotonic Dystrophy.",
+    "Analyze frameshift mutations in rare disease genes and find exon-skipping strategies to restore the reading frame. Supports DMD, LGMD, Usher Syndrome, and Myotonic Dystrophy.",
 };
 
 export default function RootLayout({

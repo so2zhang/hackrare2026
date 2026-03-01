@@ -8,6 +8,7 @@ import { ProteinSimulation, simulateProtein } from "@/lib/framemath/protein-sim"
 import { analyzeDisease } from "@/lib/diseases";
 import { getGeneProfile } from "@/lib/framemath/engine";
 import { Badge } from "@/components/ui/badge";
+import { BeckerLogo, BeckerLogoMark } from "@/components/becker-logo";
 
 const ProteinViewer3D = lazy(() =>
   import("@/components/protein-viewer-3d").then((m) => ({ default: m.ProteinViewer3D }))
@@ -53,11 +54,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-background">
       {/* Top navigation bar */}
       <header className="h-12 border-b bg-card flex items-center px-5 shrink-0">
-        <div className="flex items-center gap-2.5 mr-8">
-          <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-semibold text-[11px] leading-none">Fs</span>
-          </div>
-          <span className="text-sm font-semibold tracking-tight text-foreground">FrameShift Rx</span>
+        <div className="flex items-center gap-3 mr-8">
+          <BeckerLogoMark className="h-7 w-7 shrink-0" />
+          <BeckerLogo className="h-8 w-auto hidden sm:block" />
+          <span className="text-sm font-semibold tracking-tight text-foreground sm:hidden">Becker</span>
         </div>
         <nav className="flex items-center gap-1 text-sm">
           <Badge variant="secondary" className="font-normal text-xs cursor-default">DMD</Badge>
@@ -66,7 +66,7 @@ export default function Home() {
           <Badge variant="secondary" className="font-normal text-xs cursor-default">DM1</Badge>
         </nav>
         <div className="ml-auto text-xs text-muted-foreground">
-          Exon Skipping Analysis Tool
+          Exon Skipping Analysis
         </div>
       </header>
 
@@ -175,7 +175,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="h-8 border-t bg-card flex items-center justify-between px-5 shrink-0">
-        <p className="text-[11px] text-muted-foreground">FrameShift Rx — HackRare 2026</p>
+        <p className="text-[11px] text-muted-foreground">Becker — HackRare 2026</p>
         <p className="text-[11px] text-muted-foreground">Research tool only. Not for clinical decision-making.</p>
       </footer>
     </div>

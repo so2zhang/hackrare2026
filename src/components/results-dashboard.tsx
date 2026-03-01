@@ -11,6 +11,12 @@ import { ExonVisualizer } from "./exon-visualizer";
 import { ProteinComparison } from "./protein-comparison";
 import { TherapyCard } from "./therapy-card";
 import { ConfidenceBadge } from "./confidence-badge";
+import { FunctionalityCard, ClinicalCard, TherapeuticCard } from "./prediction-cards";
+import {
+  calculateFunctionalityScore,
+  getClinicalCorrelation,
+  getTherapeuticContext,
+} from "@/lib/prediction-score";
 
 interface ResultsDashboardProps {
   result: AnalysisResult;
@@ -19,6 +25,10 @@ interface ResultsDashboardProps {
 
 export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) {
   const { mutation, isFrameshift, originalFrameShift, bestStrategy, strategies, therapies, warnings } = result;
+
+  const funcScore = calculateFunctionalityScore(result, simulation, bestStrategy);
+  const clinical = getClinicalCorrelation(result, bestStrategy);
+  const therapeutic = getTherapeuticContext(result, bestStrategy);
 
   return (
     <div className="space-y-6">
@@ -57,6 +67,13 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
           </div>
         </CardContent>
       </Card>
+
+      {/* Prediction Cards — the three key metrics */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <FunctionalityCard score={funcScore} />
+        <ClinicalCard correlation={clinical} />
+        <TherapeuticCard context={therapeutic} />
+      </div>
 
       {/* Warnings */}
       {warnings.length > 0 && (
