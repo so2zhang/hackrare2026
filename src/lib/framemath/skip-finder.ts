@@ -4,13 +4,22 @@ import {
   getLostDomains,
   assessConfidence,
 } from "./engine";
+import { isExonSkippableForMutation } from "./skippability";
 import { GeneProfile, MutationInput, SkipStrategy } from "./types";
 
+const SEARCH_WINDOW = 6;
 const MAX_SKIP_SPAN = 5;
 
 /**
- * Find all valid exon-skipping strategies that restore the reading frame.
- * Searches single exon skips first, then multi-exon contiguous skips up to MAX_SKIP_SPAN.
+ * Find valid exon-skipping strategies that restore the reading frame.
+ *
+ * Returns MINIMAL strategies: single-exon skips preferred; double-exon only
+ * if no single-exon solution exists. Matches clinical practice where simpler = better.
+ * Ref: PMC11593839
+ *
+ * search_window=6 limits the search to 6 exons downstream of the deletion.
+ * Distant skips are theoretically valid but not therapeutically practical —
+ * ASOs need to target exons near the breakpoint.
  */
 export function findSkipStrategies(
   profile: GeneProfile,
@@ -22,58 +31,41 @@ export function findSkipStrategies(
 
   if (frameShift === 0) return [];
 
-  const strategies: SkipStrategy[] = [];
   const deletedSet = new Set(deletedExons);
-
-  const minDeleted = Math.min(...deletedExons);
   const maxDeleted = Math.max(...deletedExons);
-
   const totalGeneBp = profile.exons.reduce((s, e) => s + e.lengthBp, 0);
 
-  const searchStart = Math.max(2, minDeleted - MAX_SKIP_SPAN);
-  const searchEnd = Math.min(profile.totalExons, maxDeleted + MAX_SKIP_SPAN);
+  // Search only downstream of deletion, within SEARCH_WINDOW exons
+  const searchStart = maxDeleted + 1;
+  const searchEnd = Math.min(
+    profile.totalExons,
+    maxDeleted + SEARCH_WINDOW
+  );
 
-  for (let spanLen = 1; spanLen <= MAX_SKIP_SPAN; spanLen++) {
-    for (let start = searchStart; start <= searchEnd - spanLen + 1; start++) {
-      const candidateExons: number[] = [];
-      let valid = true;
+  // Try single-exon skips first
+  let strategies = findStrategiesOfSpan(
+    profile,
+    mutation,
+    deletedSet,
+    totalGeneBp,
+    searchStart,
+    searchEnd,
+    1
+  );
 
-      for (let i = 0; i < spanLen; i++) {
-        const exonNum = start + i;
-        const exon = getExon(profile, exonNum);
-
-        if (!exon || !exon.skippable || deletedSet.has(exonNum)) {
-          valid = false;
-          break;
-        }
-        candidateExons.push(exonNum);
-      }
-
-      if (!valid) continue;
-
-      const allRemovedExons = [...deletedExons, ...candidateExons];
-      const allRemovedBp = totalBasePairs(profile, allRemovedExons);
-
-      if (allRemovedBp % 3 !== 0) continue;
-
-      const remainingBp = totalGeneBp - allRemovedBp;
-      const predictedProteinLength = Math.floor(remainingBp / 3);
-      const percentWildtype = Math.round((remainingBp / totalGeneBp) * 100);
-      const lostDomains = getLostDomains(profile, allRemovedExons);
-      const confidence = assessConfidence(percentWildtype, lostDomains);
-
-      const skippedBp = totalBasePairs(profile, candidateExons);
-
-      strategies.push({
-        exonsToSkip: candidateExons,
-        restoredFrame: true,
-        totalSkippedBp: skippedBp,
-        predictedProteinLength,
-        percentWildtype,
-        lostDomains,
-        confidence,
-        rationale: buildRationale(candidateExons, deletedExons, percentWildtype, lostDomains),
-      });
+  // If no single-exon solution, try double, then triple, etc.
+  if (strategies.length === 0) {
+    for (let spanLen = 2; spanLen <= MAX_SKIP_SPAN; spanLen++) {
+      strategies = findStrategiesOfSpan(
+        profile,
+        mutation,
+        deletedSet,
+        totalGeneBp,
+        searchStart,
+        searchEnd,
+        spanLen
+      );
+      if (strategies.length > 0) break;
     }
   }
 
@@ -82,41 +74,71 @@ export function findSkipStrategies(
     if (confOrder[a.confidence] !== confOrder[b.confidence]) {
       return confOrder[a.confidence] - confOrder[b.confidence];
     }
-
-    const aAdj = adjacencyScore(a.exonsToSkip, minDeleted, maxDeleted);
-    const bAdj = adjacencyScore(b.exonsToSkip, minDeleted, maxDeleted);
-    if (aAdj !== bAdj) return aAdj - bAdj;
-
-    // Prefer skipping after deletion over before (single contiguous gap)
-    const aAfter = Math.min(...a.exonsToSkip) > maxDeleted ? 0 : 1;
-    const bAfter = Math.min(...b.exonsToSkip) > maxDeleted ? 0 : 1;
-    if (aAfter !== bAfter) return aAfter - bAfter;
-
     if (a.exonsToSkip.length !== b.exonsToSkip.length) {
       return a.exonsToSkip.length - b.exonsToSkip.length;
     }
-
     return b.percentWildtype - a.percentWildtype;
   });
 
   return strategies;
 }
 
-/**
- * Score how close the skipped exons are to the deletion boundary.
- * Lower is better (0 = immediately adjacent).
- */
-function adjacencyScore(skippedExons: number[], minDel: number, maxDel: number): number {
-  const minSkip = Math.min(...skippedExons);
-  const maxSkip = Math.max(...skippedExons);
+function findStrategiesOfSpan(
+  profile: GeneProfile,
+  mutation: MutationInput,
+  deletedSet: Set<number>,
+  totalGeneBp: number,
+  searchStart: number,
+  searchEnd: number,
+  spanLen: number
+): SkipStrategy[] {
+  const strategies: SkipStrategy[] = [];
 
-  const gapBefore = minDel - maxSkip - 1;
-  const gapAfter = minSkip - maxDel - 1;
+  for (let start = searchStart; start <= searchEnd - spanLen + 1; start++) {
+    const candidateExons: number[] = [];
+    let valid = true;
 
-  if (gapBefore <= 0 && gapAfter <= 0) return 0;
-  if (gapBefore <= 0) return gapAfter;
-  if (gapAfter <= 0) return gapBefore;
-  return Math.min(gapBefore, gapAfter);
+    for (let i = 0; i < spanLen; i++) {
+      const exonNum = start + i;
+      if (!isExonSkippableForMutation(profile, exonNum, mutation)) {
+        valid = false;
+        break;
+      }
+      candidateExons.push(exonNum);
+    }
+
+    if (!valid) continue;
+
+    const allRemovedExons = [...mutation.affectedExons, ...candidateExons];
+    const allRemovedBp = totalBasePairs(profile, allRemovedExons);
+
+    if (allRemovedBp % 3 !== 0) continue;
+
+    const remainingBp = totalGeneBp - allRemovedBp;
+    const predictedProteinLength = Math.floor(remainingBp / 3);
+    const percentWildtype = Math.round((remainingBp / totalGeneBp) * 100);
+    const lostDomains = getLostDomains(profile, allRemovedExons);
+    const confidence = assessConfidence(percentWildtype, lostDomains);
+    const skippedBp = totalBasePairs(profile, candidateExons);
+
+    strategies.push({
+      exonsToSkip: candidateExons,
+      restoredFrame: true,
+      totalSkippedBp: skippedBp,
+      predictedProteinLength,
+      percentWildtype,
+      lostDomains,
+      confidence,
+      rationale: buildRationale(
+        candidateExons,
+        mutation.affectedExons,
+        percentWildtype,
+        lostDomains
+      ),
+    });
+  }
+
+  return strategies;
 }
 
 function buildRationale(

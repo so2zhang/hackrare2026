@@ -16,7 +16,7 @@ import { getTherapiesForSkip } from "@/lib/therapies/mapping";
 const DMD_DELETION_HOTSPOT = { start: 45, end: 55 };
 const DMD_ESSENTIAL_REGIONS = [
   { start: 1, end: 1, reason: "Exon 1 contains the translation start site" },
-  { start: 70, end: 79, reason: "C-terminal exons encode dystroglycan and syntrophin binding sites essential for membrane anchoring" },
+  { start: 75, end: 79, reason: "C-terminal exons (75-79) encode dystroglycan and syntrophin binding sites essential for membrane anchoring" },
 ];
 
 export function analyzeDMD(mutation: MutationInput): AnalysisResult {
@@ -29,7 +29,7 @@ export function analyzeDMD(mutation: MutationInput): AnalysisResult {
 
   if (!isFs) {
     warnings.push(
-      "This deletion is in-frame and may produce a shortened but partially functional dystrophin (Becker-like phenotype). Exon skipping is not needed."
+      "This patient may already have a Becker-like phenotype — no skip needed, consider dystrophin-stabilizing approaches instead."
     );
   }
 
@@ -62,6 +62,7 @@ export function analyzeDMD(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
+    alreadyInFrame: !isFs,
     strategies,
     bestStrategy,
     therapies,

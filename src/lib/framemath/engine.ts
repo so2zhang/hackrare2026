@@ -131,15 +131,23 @@ export function assessConfidence(
   lostDomains: string[]
 ): "high" | "medium" | "low" {
   const criticalDomains = [
+    "cysteine-rich",
+    "ZZ-domain",
+    "C-terminal",
+    "CH-domain",
+    "EF-hand-1",
+    "EF-hand-2",
     "dystroglycan-binding",
     "syntrophin-binding",
-    "C-terminal",
     "actin-binding-1",
     "C2-lipid-binding",
     "TM-domain",
     "PDZ-binding",
     "signal-peptide",
     "intracellular",
+    "DysF",
+    "Ferlin-C",
+    "TM",
   ];
 
   const lostCritical = lostDomains.some((d) => criticalDomains.includes(d));

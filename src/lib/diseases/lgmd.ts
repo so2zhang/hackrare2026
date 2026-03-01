@@ -6,17 +6,19 @@ import { getTherapiesForSkip } from "@/lib/therapies/mapping";
 /**
  * LGMD2B / Dysferlinopathy analysis rules.
  *
- * Key biology:
- * - Dysferlin (DYSF) has 55 exons
- * - Involved in membrane repair — loss causes LGMD2B / Miyoshi myopathy
- * - C2 lipid-binding domains at C-terminus are critical for membrane fusion
- * - FerA domain is important for calcium-dependent membrane binding
- * - Exon skipping less well-validated than DMD but being actively researched
+ * Key biology (NP_003485.1, 2080 aa, NM_003494.4):
+ * - Dysferlin (DYSF) has 55 exons; 3 non-skippable: exon 1 (start codon), exon 54 (TM anchor), exon 55 (stop/3'UTR)
+ * - Domain structure: C2A, C2B, FerI, C2C, FerA, FerB, DysF, C2D, linker-3 (exons 35-42), C2E, linker-4, C2F, Ferlin-C, TM
+ * - Exons 26-27 deletion (common in LGMD2B): phase 0→0, already in-frame — no skip needed, but DysF domain disrupted (PMC11171558)
+ * - Exon 44 deletion: frameshift (0→2), rescued by skipping exon 47 (linker-4, phase 0→0)
+ * - Linker-3 (exons 35-42): ~300 aa uncharacterized; 8 consecutive phase-symmetric exons, all skippable
+ * - Exon skipping less clinically validated than DMD
  */
 
 const DYSF_ESSENTIAL_REGIONS = [
-  { start: 1, end: 1, reason: "Exon 1 contains the translation start site and signal sequence" },
-  { start: 52, end: 55, reason: "C-terminal exons encode C2 lipid-binding domains essential for membrane repair function" },
+  { start: 1, end: 1, reason: "Exon 1 contains the translation start site" },
+  { start: 54, end: 54, reason: "Exon 54 encodes the TM anchor essential for membrane insertion" },
+  { start: 55, end: 55, reason: "Exon 55 contains the stop codon and 3' UTR" },
 ];
 
 export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
@@ -29,7 +31,20 @@ export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
 
   if (!isFs) {
     warnings.push(
-      "This deletion is in-frame. Depending on which domains are removed, the protein may retain partial function."
+      "This deletion is in-frame. No exon skip needed; consider symptomatic care or experimental membrane-repair approaches."
+    );
+    const affectsDysF = mutation.affectedExons.some((e) => e >= 25 && e <= 28);
+    if (affectsDysF) {
+      warnings.push(
+        "Exons 26-27 deletion is common in LGMD2B (PMC11171558). Already in-frame, but DysF domain is disrupted — protein function may be impaired."
+      );
+    }
+  }
+
+  const affectsExon44 = mutation.affectedExons.includes(44);
+  if (affectsExon44 && isFs) {
+    warnings.push(
+      "Exon 44 deletion causes frameshift (0→2). Skipping exon 47 (linker-4, phase 0→0) can restore the reading frame."
     );
   }
 
@@ -57,6 +72,7 @@ export function analyzeLGMD(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
+    alreadyInFrame: !isFs,
     strategies,
     bestStrategy,
     therapies,

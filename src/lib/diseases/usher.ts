@@ -6,18 +6,20 @@ import { getTherapiesForSkip } from "@/lib/therapies/mapping";
 /**
  * Usher Syndrome Type 2A (USH2A) analysis rules.
  *
- * Key biology:
- * - Usherin (USH2A) has 72 exons, encoding a very large protein (5202 aa)
- * - Causes combined hearing loss and retinitis pigmentosa
- * - Most of the extracellular domain consists of FN3 repeats — partially redundant
- * - TM domain and intracellular/PDZ-binding domains are essential
- * - Exon 13 is a hotspot for pathogenic variants (c.2299delG is most common)
+ * Key biology (NP_996816.3, 5202 aa, NM_206933.4, UniProt O75445):
+ * - Usherin (USH2A) has 72 exons; 4 non-skippable: exon 1 (5-UTR only), 70 (TM aa 5043-5063), 71 (intracellular), 72 (stop/3-UTR)
+ * - Exon 1 is entirely 5-UTR (235 bp); CDS begins in exon 2 at mRNA pos 440
+ * - Domain structure: LamN, EGF-like 1-10, FN3 1-34, LamG-1/2, TM, intracellular, PDZ-binding (5200-5202)
+ * - Exon 13: 642 bp, phase 1→1 — primary clinical target. c.2299delG (CDS pos 2299, aa ~767) causes frameshift rescued by skipping exon 13 itself (QR-421a/Ultevursen)
+ * - Exon 41 deletion: frameshift (1→0), rescued by skipping exon 44 (phase 1→1)
  * - Exon skipping for USH2A is in active clinical development
  */
 
 const USH2A_ESSENTIAL_REGIONS = [
-  { start: 1, end: 1, reason: "Exon 1 contains the signal peptide required for protein localization" },
-  { start: 64, end: 72, reason: "C-terminal exons encode the transmembrane domain, intracellular domain, and PDZ-binding motif essential for protein anchoring and signaling" },
+  { start: 1, end: 1, reason: "Exon 1 is entirely 5-UTR; CDS begins in exon 2" },
+  { start: 70, end: 70, reason: "Exon 70 contains the TM domain (aa 5043-5063) essential for membrane anchoring" },
+  { start: 71, end: 71, reason: "Exon 71 encodes the intracellular C-terminal critical for PDZ scaffold" },
+  { start: 72, end: 72, reason: "Exon 72 contains the stop codon and 3'-UTR" },
 ];
 
 export function analyzeUsher(mutation: MutationInput): AnalysisResult {
@@ -35,9 +37,16 @@ export function analyzeUsher(mutation: MutationInput): AnalysisResult {
   }
 
   const affectsExon13 = mutation.affectedExons.includes(13);
-  if (affectsExon13) {
+  if (affectsExon13 && isFs) {
     warnings.push(
-      "Exon 13 is the most common site for pathogenic USH2A variants. Exon 13 skipping is in clinical development (QR-421a/Ultevursen)."
+      "Exon 13 (642 bp, phase 1→1) is the most clinically studied USH2A exon-skipping target. c.2299delG causes frameshift rescued by skipping exon 13 itself. QR-421a/Ultevursen in clinical trials."
+    );
+  }
+
+  const affectsExon41 = mutation.affectedExons.includes(41);
+  if (affectsExon41 && isFs) {
+    warnings.push(
+      "Exon 41 deletion causes frameshift (1→0). Skipping exon 44 (phase 1→1) can restore the reading frame with minimal domain loss."
     );
   }
 
@@ -61,6 +70,7 @@ export function analyzeUsher(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: frameShift,
     isFrameshift: isFs,
+    alreadyInFrame: !isFs,
     strategies,
     bestStrategy,
     therapies,

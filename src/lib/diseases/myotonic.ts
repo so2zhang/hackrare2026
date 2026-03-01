@@ -47,6 +47,7 @@ export function analyzeMyotonic(mutation: MutationInput): AnalysisResult {
     mutation,
     originalFrameShift: 0,
     isFrameshift: false,
+    alreadyInFrame: false,
     strategies: [],
     bestStrategy: null,
     therapies: DM_THERAPIES,

@@ -31,7 +31,7 @@ export interface TherapeuticContext {
 const ESSENTIAL_DOMAINS: Record<string, string[]> = {
   DMD: ["actin-binding-1", "dystroglycan-binding", "syntrophin-binding", "nNOS-binding"],
   DYSF: ["C2A", "C2B", "transmembrane"],
-  USH2A: ["laminin-G-1", "transmembrane"],
+  USH2A: ["TM", "intracellular", "PDZ-binding"],
   DMPK: ["kinase-catalytic"],
 };
 

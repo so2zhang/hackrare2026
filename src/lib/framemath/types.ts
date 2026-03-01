@@ -42,6 +42,8 @@ export interface AnalysisResult {
   mutation: MutationInput;
   originalFrameShift: number;
   isFrameshift: boolean;
+  /** True when deletion is already in-frame (Becker-like). No skip needed. */
+  alreadyInFrame: boolean;
   strategies: SkipStrategy[];
   bestStrategy: SkipStrategy | null;
   therapies: TherapyMatch[];

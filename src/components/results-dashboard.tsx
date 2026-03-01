@@ -24,7 +24,7 @@ interface ResultsDashboardProps {
 }
 
 export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) {
-  const { mutation, isFrameshift, originalFrameShift, bestStrategy, strategies, therapies, warnings } = result;
+  const { mutation, isFrameshift, originalFrameShift, alreadyInFrame, bestStrategy, strategies, therapies, warnings } = result;
 
   const funcScore = calculateFunctionalityScore(result, simulation, bestStrategy);
   const clinical = getClinicalCorrelation(result, bestStrategy);
@@ -67,6 +67,18 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
           </div>
         </CardContent>
       </Card>
+
+      {/* Becker-like / already in-frame message */}
+      {alreadyInFrame && (
+        <Alert className="border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-emerald-950">
+          <AlertTitle className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
+            Becker-like phenotype — no exon skip needed
+          </AlertTitle>
+          <AlertDescription className="text-sm text-emerald-700 dark:text-emerald-300">
+            This patient may already have a Becker-like phenotype — no skip needed, consider dystrophin-stabilizing approaches instead.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Prediction Cards — the three key metrics */}
       <div className="grid gap-4 lg:grid-cols-3">
