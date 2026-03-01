@@ -34,7 +34,7 @@ export default function Home() {
       const profile = getGeneProfile(mutation.gene);
       if (profile) {
         const skippedExons = analysisResult.bestStrategy?.exonsToSkip ?? [];
-        const sim = simulateProtein(profile, mutation.affectedExons, skippedExons);
+        const sim = simulateProtein(profile, mutation, skippedExons);
         setSimulation(sim);
       }
     } catch (err) {
