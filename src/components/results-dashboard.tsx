@@ -34,40 +34,40 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
     <div className="space-y-6">
       {/* Summary Card */}
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl">Analysis Results</CardTitle>
-          <div className="flex items-center gap-2 mt-1">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between gap-3">
+            <CardTitle className="text-xl">Analysis Results</CardTitle>
             {bestStrategy && <ConfidenceBadge level={bestStrategy.confidence} />}
-            <p className="text-xs text-muted-foreground">
-              {bestStrategy
-                ? `Best strategy: skip ${bestStrategy.exonsToSkip.length > 1 ? "exons" : "exon"} ${bestStrategy.exonsToSkip.join(", ")} — ${bestStrategy.percentWildtype}% protein retained`
-                : isFrameshift
-                  ? "No viable exon-skipping strategy found"
-                  : "Mutation is already in-frame"}
-            </p>
           </div>
+          <p className="text-sm text-muted-foreground mt-1">
+            {bestStrategy
+              ? `Best strategy: skip ${bestStrategy.exonsToSkip.length > 1 ? "exons" : "exon"} ${bestStrategy.exonsToSkip.join(", ")} — ${bestStrategy.percentWildtype}% protein retained`
+              : isFrameshift
+                ? "No viable exon-skipping strategy found"
+                : "Mutation is already in-frame"}
+          </p>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <CardContent>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
             <div>
-              <p className="text-sm text-muted-foreground">Gene</p>
-              <p className="text-lg font-semibold">{mutation.gene}</p>
+              <p className="text-xs text-muted-foreground mb-1">Gene</p>
+              <p className="text-base font-semibold">{mutation.gene}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Mutation</p>
-              <p className="text-lg font-semibold capitalize">{mutation.mutationType}</p>
+              <p className="text-xs text-muted-foreground mb-1">Mutation</p>
+              <p className="text-base font-semibold capitalize">{mutation.mutationType}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Affected Exons</p>
-              <p className="text-lg font-semibold">
+              <p className="text-xs text-muted-foreground mb-1">Affected Exons</p>
+              <p className="text-base font-semibold">
                 {mutation.affectedExons.length === 1
                   ? mutation.affectedExons[0]
                   : `${mutation.affectedExons[0]}-${mutation.affectedExons[mutation.affectedExons.length - 1]}`}
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Reading Frame</p>
-              <Badge variant={isFrameshift ? "destructive" : "default"}>
+              <p className="text-xs text-muted-foreground mb-1">Reading Frame</p>
+              <Badge variant={isFrameshift ? "destructive" : "default"} className="mt-0.5">
                 {isFrameshift ? `Frameshift (+${originalFrameShift}bp)` : "In-frame"}
               </Badge>
             </div>
@@ -134,7 +134,7 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
       {/* Skip Strategies */}
       {isFrameshift && (
         <Card>
-          <CardHeader>
+          <CardHeader className="pb-3">
             <CardTitle className="text-lg">
               Exon Skipping Strategies ({strategies.length} found)
             </CardTitle>
@@ -147,32 +147,32 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
                 multi-exon skipping.
               </p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-1">
                 {strategies.slice(0, 5).map((strategy, i) => (
-                  <div key={i} className="space-y-2">
-                    {i > 0 && <Separator />}
-                    <div className="flex items-start justify-between pt-2">
-                      <div>
-                        <p className="font-medium">
+                  <div key={i}>
+                    {i > 0 && <Separator className="my-3" />}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium">
                           {i === 0 ? "Best Strategy: " : ""}Skip{" "}
                           {strategy.exonsToSkip.length > 1 ? "exons " : "exon "}
                           {strategy.exonsToSkip.join(", ")}
                         </p>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
                           {strategy.rationale}
                         </p>
                       </div>
-                      <ConfidenceBadge level={strategy.confidence} />
+                      <ConfidenceBadge level={strategy.confidence} className="shrink-0" />
                     </div>
-                    <div className="flex gap-2 flex-wrap">
-                      <Badge variant="outline">
+                    <div className="flex gap-2 flex-wrap mt-2.5">
+                      <Badge variant="outline" className="text-xs">
                         {strategy.percentWildtype}% protein retained
                       </Badge>
-                      <Badge variant="outline">
+                      <Badge variant="outline" className="text-xs">
                         {strategy.totalSkippedBp} bp skipped
                       </Badge>
                       {strategy.lostDomains.length > 0 && (
-                        <Badge variant="secondary">
+                        <Badge variant="secondary" className="text-xs">
                           Lost: {strategy.lostDomains.join(", ")}
                         </Badge>
                       )}
@@ -180,7 +180,7 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
                   </div>
                 ))}
                 {strategies.length > 5 && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground pt-3">
                     ... and {strategies.length - 5} more strategies
                   </p>
                 )}
@@ -192,8 +192,8 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
 
       {/* Therapies */}
       {therapies.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-lg font-semibold">Matching Therapies & Trials</h3>
+        <div>
+          <h3 className="text-base font-semibold mb-3">Matching Therapies & Trials</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             {therapies.map((therapy, i) => (
               <TherapyCard key={i} therapy={therapy} />
@@ -204,13 +204,11 @@ export function ResultsDashboard({ result, simulation }: ResultsDashboardProps) 
 
       {/* Disclaimer */}
       <Card className="border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950">
-        <CardContent className="pt-6">
-          <p className="text-sm text-amber-800 dark:text-amber-200">
+        <CardContent className="py-4 px-5">
+          <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
             <strong>Research Tool Disclaimer:</strong> This analysis is for
             research and educational purposes only. Exon-skipping predictions are
             based on reading frame arithmetic and curated domain annotations.
-            Actual protein function depends on many factors not modeled here
-            (folding, post-translational modifications, tissue-specific expression).
             Always consult clinical genetics professionals for patient care decisions.
           </p>
         </CardContent>
