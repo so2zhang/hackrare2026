@@ -18,7 +18,7 @@ export interface GeneProfile {
   proteinLength: number;
 }
 
-export type MutationType = "deletion" | "duplication" | "point" | "insertion";
+export type MutationType = "deletion" | "duplication" | "insertion";
 
 export interface MutationInput {
   gene: string;

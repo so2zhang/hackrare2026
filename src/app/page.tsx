@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { MutationInputForm } from "@/components/mutation-input";
 import { ResultsDashboard } from "@/components/results-dashboard";
 import { MutationInput, AnalysisResult } from "@/lib/framemath/types";
@@ -9,11 +9,16 @@ import { analyzeDisease } from "@/lib/diseases";
 import { getGeneProfile } from "@/lib/framemath/engine";
 import { Badge } from "@/components/ui/badge";
 
+const ProteinViewer3D = lazy(() =>
+  import("@/components/protein-viewer-3d").then((m) => ({ default: m.ProteinViewer3D }))
+);
+
 export default function Home() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [simulation, setSimulation] = useState<ProteinSimulation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedGene, setSelectedGene] = useState<string>("");
 
   async function handleAnalyze(mutation: MutationInput) {
     setIsLoading(true);
@@ -38,119 +43,140 @@ export default function Home() {
     }
   }
 
+  function handleReset() {
+    setResult(null);
+    setSimulation(null);
+    setError(null);
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm dark:bg-slate-950/80 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">Fs</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold tracking-tight">FrameShift Rx</h1>
-              <p className="text-xs text-muted-foreground">
-                Exon Skipping Analysis for Rare Diseases
-              </p>
-            </div>
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* Top navigation bar */}
+      <header className="h-12 border-b bg-card flex items-center px-5 shrink-0">
+        <div className="flex items-center gap-2.5 mr-8">
+          <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground font-semibold text-[11px] leading-none">Fs</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              DMD
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              LGMD
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              Usher
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              DM1
-            </Badge>
-          </div>
+          <span className="text-sm font-semibold tracking-tight text-foreground">FrameShift Rx</span>
+        </div>
+        <nav className="flex items-center gap-1 text-sm">
+          <Badge variant="secondary" className="font-normal text-xs cursor-default">DMD</Badge>
+          <Badge variant="secondary" className="font-normal text-xs cursor-default">LGMD</Badge>
+          <Badge variant="secondary" className="font-normal text-xs cursor-default">Usher</Badge>
+          <Badge variant="secondary" className="font-normal text-xs cursor-default">DM1</Badge>
+        </nav>
+        <div className="ml-auto text-xs text-muted-foreground">
+          Exon Skipping Analysis Tool
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Hero section */}
-        {!result && (
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Can this frameshift be corrected?
-            </h2>
-            <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Enter a patient&apos;s mutation to see if exon skipping can restore the
-              reading frame, what the resulting protein would look like, and which
-              approved therapies or trials could help.
-            </p>
+      {/* Main content area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left sidebar — input form */}
+        <aside className="w-[380px] shrink-0 border-r bg-card overflow-y-auto">
+          <div className="p-5">
+            <MutationInputForm
+              onSubmit={handleAnalyze}
+              onGeneChange={setSelectedGene}
+              isLoading={isLoading}
+            />
           </div>
-        )}
+        </aside>
 
-        <div className={result ? "grid gap-8 lg:grid-cols-[380px_1fr]" : "max-w-xl mx-auto"}>
-          {/* Input Form */}
-          <div className={result ? "" : ""}>
-            <MutationInputForm onSubmit={handleAnalyze} isLoading={isLoading} />
-          </div>
-
-          {/* Results */}
+        {/* Right content — results or empty state */}
+        <main className="flex-1 overflow-y-auto">
           {error && (
-            <div className="rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900 p-4">
-              <p className="text-sm text-red-800 dark:text-red-200">
-                <strong>Error:</strong> {error}
-              </p>
+            <div className="p-6">
+              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-4">
+                <p className="text-sm text-destructive">
+                  <strong>Error:</strong> {error}
+                </p>
+              </div>
             </div>
           )}
 
-          {result && (
-            <div>
+          {result ? (
+            <div className="p-6 max-w-4xl">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-semibold text-foreground">Analysis Results</h2>
+                <button
+                  onClick={handleReset}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                >
+                  Clear results
+                </button>
+              </div>
               <ResultsDashboard result={result} simulation={simulation} />
             </div>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center max-w-lg px-6">
+                {selectedGene ? (
+                  <Suspense
+                    fallback={
+                      <div className="w-full max-w-[420px] aspect-square mx-auto rounded-2xl border bg-card flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="h-5 w-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                          <p className="text-xs text-muted-foreground">Loading 3D model...</p>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <ProteinViewer3D gene={selectedGene} />
+                    <p className="text-xs text-muted-foreground mt-6 leading-relaxed max-w-sm mx-auto">
+                      Enter the affected exon(s) and click <strong>Analyze Mutation</strong> to check if exon skipping can restore the reading frame.
+                    </p>
+                  </Suspense>
+                ) : (
+                  <>
+                    <div className="mx-auto mb-6 h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                        <path d="M9 3H5a2 2 0 0 0-2 2v4" />
+                        <path d="M15 3h4a2 2 0 0 1 2 2v4" />
+                        <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
+                        <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                      </svg>
+                    </div>
+                    <h3 className="text-base font-semibold text-foreground mb-2">
+                      No analysis running
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                      Select a gene in the panel on the left to preview its protein structure, then enter mutation details to run an analysis.
+                    </p>
+                    <div className="grid grid-cols-3 gap-4 text-left">
+                      <div className="p-3 rounded-md bg-card border">
+                        <div className="text-xs font-medium text-primary mb-1">Step 1</div>
+                        <p className="text-xs text-muted-foreground leading-snug">
+                          Select gene and enter the patient&apos;s mutation details.
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-md bg-card border">
+                        <div className="text-xs font-medium text-primary mb-1">Step 2</div>
+                        <p className="text-xs text-muted-foreground leading-snug">
+                          The engine finds exon-skipping strategies to restore the reading frame.
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-md bg-card border">
+                        <div className="text-xs font-medium text-primary mb-1">Step 3</div>
+                        <p className="text-xs text-muted-foreground leading-snug">
+                          View matched therapies, protein predictions, and trial info.
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           )}
-        </div>
-
-        {/* How it works (shown when no results) */}
-        {!result && (
-          <div className="mt-16 grid gap-6 sm:grid-cols-3 max-w-4xl mx-auto">
-            <div className="text-center p-6 rounded-lg border bg-card">
-              <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mx-auto mb-3">
-                <span className="text-blue-600 dark:text-blue-400 font-bold">1</span>
-              </div>
-              <h3 className="font-semibold mb-2">Input Mutation</h3>
-              <p className="text-sm text-muted-foreground">
-                Select the gene and specify which exons are deleted, duplicated,
-                or affected by the patient&apos;s mutation.
-              </p>
-            </div>
-            <div className="text-center p-6 rounded-lg border bg-card">
-              <div className="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mx-auto mb-3">
-                <span className="text-purple-600 dark:text-purple-400 font-bold">2</span>
-              </div>
-              <h3 className="font-semibold mb-2">Frame Analysis</h3>
-              <p className="text-sm text-muted-foreground">
-                Our engine calculates if the reading frame is disrupted and finds
-                exon-skipping strategies to restore it.
-              </p>
-            </div>
-            <div className="text-center p-6 rounded-lg border bg-card">
-              <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mx-auto mb-3">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">3</span>
-              </div>
-              <h3 className="font-semibold mb-2">Therapy Match</h3>
-              <p className="text-sm text-muted-foreground">
-                See which FDA-approved drugs or clinical trials target the
-                identified exon skip, with protein impact predictions.
-              </p>
-            </div>
-          </div>
-        )}
-      </main>
+        </main>
+      </div>
 
       {/* Footer */}
-      <footer className="border-t mt-16">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between text-sm text-muted-foreground">
-          <p>FrameShift Rx — HackRare 2026</p>
-          <p>Research tool only. Not for clinical decision-making.</p>
-        </div>
+      <footer className="h-8 border-t bg-card flex items-center justify-between px-5 shrink-0">
+        <p className="text-[11px] text-muted-foreground">FrameShift Rx — HackRare 2026</p>
+        <p className="text-[11px] text-muted-foreground">Research tool only. Not for clinical decision-making.</p>
       </footer>
     </div>
   );
