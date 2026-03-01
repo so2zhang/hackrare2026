@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, lazy, Suspense } from "react";
+import Link from "next/link";
 import { MutationInputForm } from "@/components/mutation-input";
 import { ResultsDashboard } from "@/components/results-dashboard";
 import { MutationInput, AnalysisResult } from "@/lib/framemath/types";
@@ -65,8 +66,16 @@ export default function Home() {
           <Badge variant="secondary" className="font-normal text-xs cursor-default">Usher</Badge>
           <Badge variant="secondary" className="font-normal text-xs cursor-default">DM1</Badge>
         </nav>
-        <div className="ml-auto text-xs text-muted-foreground">
-          Exon Skipping Analysis
+        <div className="ml-auto flex items-center gap-4">
+          <Link
+            href="/validation"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          >
+            Validation
+          </Link>
+          <span className="text-xs text-muted-foreground">
+            Exon Skipping Analysis
+          </span>
         </div>
       </header>
 
