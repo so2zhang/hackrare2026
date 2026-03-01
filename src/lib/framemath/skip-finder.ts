@@ -18,8 +18,8 @@ const MAX_SKIP_SPAN = 5;
  * removal restores divisibility by 3.
  *
  * For **duplications**: the primary strategy is to skip the duplicated exons
- * themselves (ASO removes ALL copies, cancelling the extra bp). Downstream
- * alternatives are also searched as fallbacks.
+ * themselves (ASO removes ALL copies, cancelling the extra bp).
+ * Downstream alternatives are also searched as fallbacks.
  *
  * Returns MINIMAL strategies: single-exon skips preferred; double-exon only
  * if no single-exon solution exists. Ref: PMC11593839
@@ -39,7 +39,7 @@ export function findSkipStrategies(
   const geneCodingBp = totalGeneBp(profile);
   const strategies: SkipStrategy[] = [];
 
-  // ── Duplication/Insertion: primary strategy is skipping the affected exons ──
+  // ── Duplication: primary strategy is skipping the affected exons ──
   if (!isDeletion) {
     const allSkippable = affectedExons.every((n) => {
       const exon = getExon(profile, n);
@@ -62,7 +62,7 @@ export function findSkipStrategies(
         percentWildtype,
         lostDomains,
         confidence,
-        rationale: buildRationale(affectedExons, affectedExons, percentWildtype, lostDomains, mutation.mutationType),
+        rationale: buildRationale(affectedExons, affectedExons, percentWildtype, lostDomains, "duplication"),
       });
     }
   }
@@ -133,7 +133,7 @@ function findStrategiesOfSpan(
     if (!valid) continue;
 
     if (mutType !== "deletion") {
-      // For duplications/insertions: the extra bp must be cancelled by skipped bp
+      // For duplications: the extra bp must be cancelled by skipped bp
       const dupBp = totalBasePairs(profile, mutation.affectedExons);
       const skipBp = totalBasePairs(profile, candidateExons);
       if ((dupBp - skipBp) % 3 !== 0) continue;
@@ -200,12 +200,10 @@ function buildRationale(
   if (mutType !== "deletion") {
     const sameExons = skippedExons.length === affectedExons.length &&
       skippedExons.every((e, i) => e === affectedExons[i]);
-    const mutLabel = mutType === "duplication" ? "duplicated" : "affected";
-
     if (sameExons) {
-      rationale = `Skipping the ${mutLabel} ${affectedStr} removes the ${mutType === "duplication" ? "extra copies" : "disrupted sequence"} via ASO, restoring the reading frame. The resulting protein is ~${percentWt}% of wildtype length.`;
+      rationale = `Skipping the duplicated ${affectedStr} removes the extra copies via ASO, restoring the reading frame. The resulting protein is ~${percentWt}% of wildtype length.`;
     } else {
-      rationale = `Skipping ${skipStr} alongside the ${mutType} of ${affectedStr} restores the reading frame, producing a protein ~${percentWt}% of wildtype length.`;
+      rationale = `Skipping ${skipStr} alongside the duplication of ${affectedStr} restores the reading frame, producing a protein ~${percentWt}% of wildtype length.`;
     }
   } else {
     rationale = `Skipping ${skipStr} alongside the deletion of ${affectedStr} restores the reading frame, producing a protein ~${percentWt}% of wildtype length.`;

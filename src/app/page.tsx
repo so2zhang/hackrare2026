@@ -64,7 +64,6 @@ export default function Home() {
           <Badge variant="secondary" className="font-normal text-xs cursor-default">DMD</Badge>
           <Badge variant="secondary" className="font-normal text-xs cursor-default">LGMD</Badge>
           <Badge variant="secondary" className="font-normal text-xs cursor-default">Usher</Badge>
-          <Badge variant="secondary" className="font-normal text-xs cursor-default">DM1</Badge>
         </nav>
         <div className="ml-auto flex items-center gap-4">
           <Link

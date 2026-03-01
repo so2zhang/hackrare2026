@@ -16,7 +16,6 @@ const STATUS_COLORS: Record<string, string> = {
   present: "bg-emerald-400 hover:bg-emerald-500",
   deleted: "bg-red-500 hover:bg-red-600",
   duplicated: "bg-blue-500 hover:bg-blue-600",
-  inserted: "bg-violet-500 hover:bg-violet-600",
   skipped: "bg-amber-400 hover:bg-amber-500",
 };
 
@@ -24,7 +23,6 @@ const STATUS_LABELS: Record<string, string> = {
   present: "Present",
   deleted: "Deleted (mutation)",
   duplicated: "Duplicated (mutation)",
-  inserted: "Insertion (mutation)",
   skipped: "Skipped (therapeutic)",
 };
 

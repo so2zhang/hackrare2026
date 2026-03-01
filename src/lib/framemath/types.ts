@@ -22,7 +22,7 @@ export interface GeneProfile {
   cdsEnd_mRNA?: number;
 }
 
-export type MutationType = "deletion" | "duplication" | "insertion";
+export type MutationType = "deletion" | "duplication";
 
 export interface MutationInput {
   gene: string;

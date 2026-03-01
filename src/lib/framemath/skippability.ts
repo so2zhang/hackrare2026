@@ -23,7 +23,7 @@ export function isExonSkippableForMutation(
   if (!exon.skippable) return false;
 
   // For deletions: can't skip an exon that's already deleted
-  // For duplications/insertions: affected exons are still present, so skipping is valid
+  // For duplications: affected exons are still present, so skipping is valid
   if (mutation.mutationType === "deletion" && mutation.affectedExons.includes(exonNum)) {
     return false;
   }

@@ -2,9 +2,7 @@ import { MutationInput, AnalysisResult } from "@/lib/framemath/types";
 import { analyzeDMD } from "./dmd";
 import { analyzeLGMD } from "./lgmd";
 import { analyzeUsher } from "./usher";
-import { analyzeMyotonic } from "./myotonic";
-
-export type DiseaseKey = "DMD" | "DYSF" | "USH2A" | "DMPK";
+export type DiseaseKey = "DMD" | "DYSF" | "USH2A";
 
 export const DISEASE_INFO: Record<DiseaseKey, { name: string; gene: string; description: string }> = {
   DMD: {
@@ -22,11 +20,6 @@ export const DISEASE_INFO: Record<DiseaseKey, { name: string; gene: string; desc
     gene: "USH2A",
     description: "Combined hearing loss and progressive vision loss (retinitis pigmentosa) caused by usherin mutations.",
   },
-  DMPK: {
-    name: "Myotonic Dystrophy Type 1",
-    gene: "DMPK",
-    description: "Multi-system disorder caused by CTG repeat expansion. Treatment targets toxic RNA, not frameshifts.",
-  },
 };
 
 export function analyzeDisease(mutation: MutationInput): AnalysisResult {
@@ -39,9 +32,7 @@ export function analyzeDisease(mutation: MutationInput): AnalysisResult {
       return analyzeLGMD(mutation);
     case "USH2A":
       return analyzeUsher(mutation);
-    case "DMPK":
-      return analyzeMyotonic(mutation);
     default:
-      throw new Error(`Unsupported gene: ${gene}. Supported genes: DMD, DYSF, USH2A, DMPK`);
+      throw new Error(`Unsupported gene: ${gene}. Supported genes: DMD, DYSF, USH2A`);
   }
 }

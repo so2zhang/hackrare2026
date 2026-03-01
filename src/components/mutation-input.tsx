@@ -25,7 +25,6 @@ const GENE_EXON_COUNTS: Record<string, number> = {
   DMD: 79,
   DYSF: 55,
   USH2A: 72,
-  DMPK: 15,
 };
 
 const EXAMPLE_MUTATIONS: { label: string; mutation: MutationInput }[] = [
@@ -236,7 +235,6 @@ export function MutationInputForm({ onSubmit, onGeneChange, isLoading }: Mutatio
             <SelectContent>
               <SelectItem value="deletion">Deletion</SelectItem>
               <SelectItem value="duplication">Duplication</SelectItem>
-              <SelectItem value="insertion">Insertion</SelectItem>
             </SelectContent>
           </Select>
         </div>

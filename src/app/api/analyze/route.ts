@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const validTypes = ["deletion", "duplication", "insertion"];
+    const validTypes = ["deletion", "duplication"];
     if (!validTypes.includes(mutationType)) {
       return NextResponse.json(
         { error: `Invalid mutationType. Must be one of: ${validTypes.join(", ")}` },

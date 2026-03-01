@@ -3,7 +3,7 @@ import { getCodingBp } from "./engine";
 
 export interface ProteinSegment {
   exonNumber: number;
-  status: "present" | "deleted" | "duplicated" | "inserted" | "skipped";
+  status: "present" | "deleted" | "duplicated" | "skipped";
   aminoAcids: number;
   domains: string[];
 }
@@ -24,7 +24,6 @@ export interface ProteinSimulation {
  * Deletion:    affected exons are missing → skip restores frame by removing more.
  * Duplication: affected exons are present twice → skip removes all copies (ASO
  *              can't distinguish original from duplicate).
- *              Net result after skipping the duplicated exons = same as deletion.
  */
 export function simulateProtein(
   profile: GeneProfile,
@@ -69,7 +68,7 @@ export function simulateProtein(
         if (gapStart === null) gapStart = exon.number;
         gapEnd = exon.number;
       } else if (isAffected) {
-        status = mutationType === "duplication" ? "duplicated" : "inserted";
+        status = "duplicated";
       }
     }
 
