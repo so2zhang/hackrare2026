@@ -55,8 +55,8 @@ export default function Home() {
       {/* Top navigation bar */}
       <header className="h-12 border-b bg-card flex items-center px-5 shrink-0">
         <div className="flex items-center gap-3 mr-8">
-          <BeckerLogoMark className="h-7 w-7 shrink-0" />
-          <BeckerLogo className="h-8 w-auto hidden sm:block" />
+          <BeckerLogoMark className="h-8 w-8 shrink-0" />
+          <BeckerLogo className="h-9 w-auto hidden sm:block" />
           <span className="text-sm font-semibold tracking-tight text-foreground sm:hidden">Becker</span>
         </div>
         <nav className="flex items-center gap-1 text-sm">
