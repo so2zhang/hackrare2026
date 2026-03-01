@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 interface ProteinViewer3DProps {
@@ -48,14 +48,7 @@ const GENE_STRUCTURES: Record<string, {
   },
 };
 
-function getPageBackgroundColor(): string {
-  if (typeof window === "undefined") return "#fafafa";
-  const bg = getComputedStyle(document.body).backgroundColor;
-  if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg;
-  return "#fafafa";
-}
-
-function ViewerCanvas({ gene, config }: { gene: string; config: typeof GENE_STRUCTURES[string] }) {
+function ViewerCanvas({ config }: { config: typeof GENE_STRUCTURES[string] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<any>(null);
   const [ready, setReady] = useState(false);
@@ -74,10 +67,15 @@ function ViewerCanvas({ gene, config }: { gene: string; config: typeof GENE_STRU
     import("ngl").then((NGL) => {
       if (cancelled || !el) return;
 
-      const bgColor = getPageBackgroundColor();
-
-      stage = new NGL.Stage(el, { backgroundColor: bgColor });
+      stage = new NGL.Stage(el, { backgroundColor: "white" });
       stageRef.current = stage;
+
+      try {
+        const renderer = stage.viewer.renderer;
+        renderer.setClearColor(0x000000, 0);
+        const canvas = renderer.domElement;
+        if (canvas) canvas.style.background = "transparent";
+      } catch {}
 
       observer = new ResizeObserver(() => {
         try { stage?.handleResize(); } catch {}
@@ -97,6 +95,12 @@ function ViewerCanvas({ gene, config }: { gene: string; config: typeof GENE_STRU
 
           component.autoView(500);
           stage.setSpin(true);
+
+          try {
+            const renderer = stage.viewer.renderer;
+            renderer.setClearColor(0x000000, 0);
+          } catch {}
+
           setReady(true);
         })
         .catch(() => {
@@ -135,13 +139,6 @@ function ViewerCanvas({ gene, config }: { gene: string; config: typeof GENE_STRU
         className="w-full h-full transition-opacity duration-500"
         style={{ opacity: ready ? 1 : 0, cursor: "grab" }}
       />
-      {/* Vignette overlay to feather edges into the page background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse at center, transparent 45%, ${getPageBackgroundColor()} 85%)`,
-        }}
-      />
     </>
   );
 }
@@ -153,7 +150,7 @@ export function ProteinViewer3D({ gene }: ProteinViewer3DProps) {
   return (
     <div className="flex flex-col items-center gap-3 w-full">
       <div className="relative w-full max-w-[460px] aspect-square">
-        <ViewerCanvas key={gene} gene={gene} config={config} />
+        <ViewerCanvas key={gene} config={config} />
         <div className="absolute bottom-2 left-0 right-0 text-center">
           <p className="text-[10px] text-muted-foreground/50">
             Drag to rotate &middot; Scroll to zoom
